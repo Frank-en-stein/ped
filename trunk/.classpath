@@ -2,5 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="/opt/local/stow/processing-1.5.1/share/processing/lib/core.jar"/>
+	<classpathentry kind="lib" path="/net/cremi/tmanson/ped-workspace/PED/Ressources/JavaCVProcessing/dist/JavaCVProcessing.jar"/>
+	<classpathentry kind="lib" path="/autofs/netapp/travail/tmanson/ped-workspace/PED/Ressources/javacv-bin/javacv.jar" sourcepath="Ressources/javacv"/>
+	<classpathentry kind="lib" path="/opt/local/stow/processing-1.5.1/share/processing/modes/java/libraries/opengl/library/opengl.jar"/>
+	<classpathentry kind="lib" path="/opt/local/stow/processing-1.5.1/share/processing/modes/java/libraries/opengl/library/jogl.jar"/>
+	<classpathentry kind="lib" path="/opt/local/stow/processing-1.5.1/share/processing/modes/java/libraries/opengl/library/gluegen-rt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
