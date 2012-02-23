@@ -1,18 +1,31 @@
 package camViewer;
+import com.googlecode.javacpp.Loader;
+import com.googlecode.javacv.*;
+import com.googlecode.javacv.cpp.*;
+import com.googlecode.javacv.processing.*;
+
+import java.util.concurrent.Semaphore;
+import javax.media.opengl.GL;
 
 import processing.core.*;
+import processing.opengl.*;
 
-public class camViewer extends PApplet {
+public class CamViewer extends PApplet{
+
+	private static final long serialVersionUID = 1L;
 	// TODO: Local folder 
-	String sketchBookFolder = "/net/cremi/tmanson/espaces/travail/ped-workspace/PED/Ressources/camViewer";
+	String sketchBookFolder = "/net/cremi/tmanson/ped-workspace/PED/src/camViewer";
 	String calibrationBoardL = sketchBookFolder + "/data/my_markerboarda3v1.cfg";
-	public String[] boards = new String[1];
+	String[] boards = new String[1];
 
 	////////////// Camera parameters //////////////////////////////
 
 	int cameraHiRes = 1;
-	int cameraHiX = 1712;
-	int cameraHiY = 960;
+	// int cameraHiX = 1712;
+	// int cameraHiY = 960;
+
+	int cameraHiX = 640;
+	int cameraHiY = 480;
 
 	////////////// Paper sheet parameters ////////////////////////
 
@@ -22,6 +35,11 @@ public class camViewer extends PApplet {
 
 	CamHiRes camHiRes;
 	CamHiResThread camHiResThread;
+
+
+	String videoFileName = "/net/cremi/tmanson/ped/videos/capture.avi";
+	boolean useVideo = true;
+
 
 
 	public void setup(){ 
@@ -37,14 +55,27 @@ public class camViewer extends PApplet {
 		boards[0] = calibrationBoardL;
 
 		// TODO: fichier de config ?
-		camHiRes = new CamHiRes(this, cameraHiRes,    // 
-				cameraHiX, cameraHiY,  // logitech ... 
-				cameraHiX, cameraHiY,  // logitech ... 
-				// TODO: avec autre résolutions !!
-				//			  870, 630,  // ~ 20x 21 *29,7
-				new PVector(paperSheetWidth, paperSheetHeight),
-				sketchBookFolder + "/data/calibration-p2.yaml",
-				sketchBookFolder + "/data/calib1-art-p2.txt");
+		if(!useVideo)
+			camHiRes = new CamHiRes(this, cameraHiRes,    // 
+					cameraHiX, cameraHiY,  // logitech ... 
+					cameraHiX, cameraHiY,  // logitech ... 
+					// TODO: avec autre résolutions !!
+					//			  870, 630,  // ~ 20x 21 *29,7
+					new PVector(paperSheetWidth, paperSheetHeight),
+					sketchBookFolder + "/data/calibration-p2.yaml",
+					sketchBookFolder + "/data/calib1-art-p2.txt");
+
+		if(useVideo)
+			camHiRes = new CamHiRes(this, videoFileName,    // 
+					cameraHiX, cameraHiY,  // logitech ... 
+					cameraHiX, cameraHiY,  // logitech ... 
+					// TODO: avec autre résolutions !!
+					//			  870, 630,  // ~ 20x 21 *29,7
+					new PVector(paperSheetWidth, paperSheetHeight),
+					sketchBookFolder + "/data/calibration-p1.yaml",
+					sketchBookFolder + "/data/calib1-art.txt");
+
+
 
 		camHiResThread = new CamHiResThread(camHiRes);  
 		camHiResThread.start();
@@ -108,6 +139,7 @@ public class camViewer extends PApplet {
 	public void stop() {
 		super.stop();
 	}
-
 }
+
+
 
