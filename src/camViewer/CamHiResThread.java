@@ -2,7 +2,7 @@ package camViewer;
 
 import processing.core.*;
 
-class CamHiResThread extends Thread{
+public class CamHiResThread extends Thread{
 
     private CamHiRes cam;
 

@@ -1,0 +1,9 @@
+les fichiers de calibrage .yaml sont pour OpenCV. 
+
+les fichiers indiqués :  -p2  sont pour la caméra haute résolution 
+les fichiers indiqués :  -p1 ou sans annotation sont pour les caméras Playstation eye.
+
+le fichiers my_markerboarda3v1.cfg est un fichier de configuration pour ARToolkitPlus.  Le fichier svg est fourni avec, juste à titre indicatif de la planche de tag. Il n'est pas nécessaire à l'application. 
+
+
+
