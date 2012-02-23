@@ -1,0 +1,54 @@
+\documentclass [a4paper,12pt] {article}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel} % francisation                                                                                                                                  
+\usepackage{graphicx}
+\usepackage[nottoc, notlof, notlot]{tocbibind}
+\author{Manson Tomy\\Mestreau Nicolas\\Ridel Fabien\\Wen Jun\\Client :\\Jérémy Laviole}
+\date{}
+\title{\rule{\linewidth} {1pt}\\\textbf{Extraction et analyse d’image}\\ Projet d'étude et de Développement\\\rule{\linewidth} {1pt}}
+%\bibliographystyle{ieeetr}
+\bibliographystyle{plain}
+%%%% debut macro %%%%
+\makeatletter
+\def\captionof#1#2{{\def\@captype{#1}#2}}
+\makeatother
+%%%% fin macro %%%%
+\begin{document}
+
+\maketitle
+\newpage
+\tableofcontents
+
+\newpage
+\section{Introduction}
+\input{intro.tex}
+
+\newpage
+\section{Objectifs}
+\input{objectif.tex}
+
+%
+%\begin{center}
+%\includegraphics[scale=0.15]{spatio_temporal_tracking.png}
+%
+%\captionof{figure}{Example of a tracking on a spatio-temporal saliency map}
+%\end{center}
+
+\newpage
+\section{Travail accompli}
+\input{travaux.tex}
+
+\newpage
+\section{Tests et résultats}
+\input{tests.tex}
+
+\newpage
+\section{Conclusion}
+\input{conclusion.tex}
+
+
+\clearpage
+\bibliography{biblio.bib}
+
+
+\end{document}
