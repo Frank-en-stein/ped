@@ -43,7 +43,6 @@ public class CamViewer extends PApplet{
 
 
 	public void setup(){ 
-
 		size(cameraHiX, cameraHiY, P3D);
 
 		// A4  21. * 29.7 cm.
@@ -80,7 +79,7 @@ public class CamViewer extends PApplet{
 		camHiResThread = new CamHiResThread(camHiRes);  
 		camHiResThread.start();
 
-		//  frameRate(200);
+		//frameRate(200);
 	}
 
 
