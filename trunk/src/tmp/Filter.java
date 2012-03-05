@@ -1,4 +1,4 @@
-package Preprocessing;
+package tmp;
 
 import static com.googlecode.javacv.cpp.opencv_core.*;
 import static com.googlecode.javacv.cpp.opencv_highgui.*;
@@ -82,7 +82,7 @@ public class Filter {
 		return dst;
 	}
 
-	static IplImage process(IplImage src){
+	public static IplImage process(IplImage src){
 		IplImage dst = cvCreateImage(cvGetSize(src), src.depth(),  src.nChannels());
 		// image 1
 		IplImage image_gray = grayScale(src);
