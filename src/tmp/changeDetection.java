@@ -1,12 +1,19 @@
 package tmp;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
+import org.omg.CORBA.IMP_LIMIT;
+
 import processing.core.PImage;
 
 import com.googlecode.javacv.CanvasFrame;
+import com.googlecode.javacv.cpp.opencv_core.CvMatArray;
+import com.googlecode.javacv.cpp.opencv_core.CvPoint;
 import com.googlecode.javacv.cpp.opencv_core.CvScalar;
+import com.googlecode.javacv.cpp.opencv_core.CvSize;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
 import com.googlecode.javacv.cpp.*;
 import static com.googlecode.javacv.cpp.opencv_core.*;
@@ -41,7 +48,6 @@ public class changeDetection {
 		IplImage res= cvCreateImage(image1.cvSize(), image1.depth(), image1.nChannels());
 		IntBuffer buff1 = image1.getIntBuffer();
 		IntBuffer buff2 = image2.getIntBuffer();
-		System.out.println(image1.width()*image1.height());
 		for (int i = 0; i < image1.width() * image1.height(); i++) {
 			int index = i;
 			CvScalar p1 = cvGet1D(image1, i);
@@ -60,21 +66,73 @@ public class changeDetection {
 		IplImage im2 = cvLoadImage("/net/cremi/tmanson/ped-workspace/PED/Ressources/debian girl/capImage1-32.png",CV_LOAD_IMAGE_GRAYSCALE);
 		int size = im1.height()*im1.width();
 		IplImage new_areas= cvCreateImage(im1.cvSize(), im1.depth(), im1.nChannels());
-
+		CvSize tmpSize = new CvSize();
+		tmpSize.width(im1.width()/10);
+		tmpSize.height(im1.height()/10);
+		IplImage tmp1= cvCreateImage(tmpSize, im1.depth(), im1.nChannels());
+		IplImage tmp2= cvCreateImage(tmpSize, im1.depth(), im1.nChannels());
+		cvResize(im1, tmp1, CV_INTER_LINEAR);
+		cvResize(im2, tmp2, CV_INTER_LINEAR);	
+		System.out.println(tmp1.width());
 		// create image window named "My Image"
 		final CanvasFrame canvas = new CanvasFrame("My Image");
 		canvas.setSize(640, 480);
 		// request closing of the application when the image window is closed
 		canvas.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
 
-		IplImage res = difference(im2, im1);
+		//IplImage diff = difference(im2, im1);
+		IplImage corr = correlation(tmp1,tmp2);
 		// show image on window
 		System.out.println("ok");
-		canvas.showImage(im1);
+		canvas.showImage(tmp1);
 		cvWaitKey(2000);
-		canvas.showImage(im2);
+		canvas.showImage(tmp2);
 		cvWaitKey(2000);
-		canvas.showImage(res);
+		canvas.showImage(corr);
 	}
 
+	private static IplImage correlation(IplImage im1, IplImage im2) {
+		/// Global Variables
+
+		IplImage result;
+		int AREA_SIZE = im1.width()/10;
+
+		CvSize size = new CvSize();
+		size.width(im1.width()-AREA_SIZE+1);
+		size.height(im1.height()-AREA_SIZE+1);
+
+		result = cvCreateImage(size, IPL_DEPTH_32F, 1);
+
+		IplImage tpl1,tpl2;
+		CvSize tplSize = new CvSize();
+		tplSize.width(AREA_SIZE);
+		tplSize.height(AREA_SIZE);
+		tpl1 = cvCreateImage(tplSize, IPL_DEPTH_32F, 3);
+		tpl2 = cvCreateImage(tplSize, IPL_DEPTH_32F, 3);
+
+		System.out.println("compute");
+		for(int i = 0; i<im1.height(); i++)
+			for(int j = 0; j<im1.width(); j++){
+				for(int k = 0; k<AREA_SIZE; k++)
+					for(int l = 0; l< AREA_SIZE; l++){
+						
+						int index = (i+k)*im1.width()+j+l;
+						if(index<im1.width()*im1.height()){
+						//System.out.println(index);
+						CvScalar p1 = cvGet2D(im1, i,j);
+						CvScalar p2 = cvGet2D(im2, i,j);
+						cvSet2D(tpl1, k,l, p1);
+						cvSet2D(tpl2, k,l, p2);
+						}
+					}
+
+				/* Choix possibles : 
+				 * CV_TM_SQDIFF, CV_TM_CCORR, CV_TM_CCOEFF,
+				 * CV_TM_SQDIFF_NORMED, CV_TM_CCORR_NORMED, CV_TM_CCOEFF_NORMED */
+				/*int matchMethod = CV_TM_CCORR_NORMED;
+				cvMatchTemplate(im1, tpl, result, matchMethod);
+				cvNormalize(result, result, 0, 1, CV_MINMAX, null);*/
+			}
+		return tpl1;
+	}
 }

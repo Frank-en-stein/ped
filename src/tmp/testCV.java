@@ -1,20 +1,8 @@
-package Preprocessing;
+package tmp;
 
-import com.sun.jna.Memory;
-import com.sun.jna.Pointer;
-import com.sun.jna.ptr.FloatByReference;
-
-import com.googlecode.javacpp.DoublePointer;
-import com.googlecode.javacpp.DoublePointer.*;
 import static com.googlecode.javacv.cpp.opencv_core.*;
 import static com.googlecode.javacv.cpp.opencv_imgproc.*;
 import static com.googlecode.javacv.cpp.opencv_highgui.*;
-import static com.googlecode.javacv.cpp.opencv_features2d.*;
-import static com.googlecode.javacv.cpp.opencv_contrib.*;
-import static com.googlecode.javacv.cpp.opencv_legacy.*;
-import static com.googlecode.javacv.cpp.opencv_ml.*;
-
-import com.googlecode.javacv.cpp.avcodec.AVCodecParser.Split;
 
 
 public class testCV {

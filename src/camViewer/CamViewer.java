@@ -40,6 +40,7 @@ public class CamViewer extends PApplet{
 	String videoFileName = "/net/cremi/tmanson/ped/videos/capture.avi";
 	boolean useVideo = true;
 
+	Extractor ext = new Extractor();
 
 
 	public void setup(){ 
@@ -78,7 +79,7 @@ public class CamViewer extends PApplet{
 
 		camHiResThread = new CamHiResThread(camHiRes);  
 		camHiResThread.start();
-
+ext.start();
 		//frameRate(200);
 	}
 
@@ -104,9 +105,12 @@ public class CamViewer extends PApplet{
 			if(im0 != null) {
 				PImage out1 = createImage(cameraHiX, cameraHiY, RGB);
 				out1.set(0, 0, im0.get());
-				out1.save("capImage1-"+ currentImageSave++ +".png");
-				println("Image sauvée, id : "+ (currentImageSave-1));
+				//out1.save("capImage1-"+ currentImageSave++ +".png");
+				//println("Image sauvée, id : "+ (currentImageSave-1));
 				//	    camView[0].save("/dev/shm/capRight.png");
+				ext.file.addLast(out1);
+				System.out.println("Image Pushed");
+				saveImages = false;
 			}
 		}
 
