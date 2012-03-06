@@ -25,7 +25,7 @@ public class Filter {
 
 	static IplImage grayScale(IplImage src){
 		IplImage dst = cvCreateImage(cvGetSize(src), src.depth(), 1);
-		cvConvertImage(src, dst,0);
+		cvConvertImage(src, dst,CV_RGB2BGR);
 		return dst;
 	}
 
