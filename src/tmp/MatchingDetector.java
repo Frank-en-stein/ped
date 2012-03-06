@@ -10,7 +10,7 @@ import java.awt.Toolkit;
 
 import com.googlecode.javacv.CanvasFrame;
 
-public class Detector{
+public class MatchingDetector{
 
 	/**
 	 * @param args
