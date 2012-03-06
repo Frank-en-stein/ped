@@ -12,14 +12,11 @@ public class Grayscale extends Filter {
 	public Boolean filter(IplImage src, IplImage dst) {
 		if(src.nChannels() == 3){
 			int mode;
-			System.out.println(src.getBufferedImage().getType());
 			switch(src.getBufferedImage().getType()){
 			case BufferedImage.TYPE_4BYTE_ABGR :
 				mode = CV_BGRA2GRAY;
 				break;
 			case BufferedImage.TYPE_INT_BGR :
-				mode = CV_BGR2GRAY;
-				break;
 			case BufferedImage.TYPE_3BYTE_BGR :
 				mode = CV_BGR2GRAY;
 				break;
