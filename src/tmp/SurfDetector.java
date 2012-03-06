@@ -16,7 +16,7 @@ public class SurfDetector {
 	public static void main(String[] args) throws Exception {
 //      Logger.getLogger("com.googlecode.javacv").setLevel(Level.OFF);
 
-      String objectFilename = args.length == 2 ? args[0] : "/net/cremi/nmestrea/espaces/travail/ped/Ressources/tieFighter_gross2.jpg";
+      String objectFilename = args.length == 2 ? args[0] : "/net/cremi/nmestrea/espaces/travail/ped/Ressources/man2.jpg";
       String sceneFilename  = args.length == 2 ? args[1] : "/net/cremi/nmestrea/espaces/travail/ped/Ressources/scan_rotate.jpg";
 
       IplImage object = cvLoadImage(objectFilename, CV_LOAD_IMAGE_GRAYSCALE);
@@ -38,6 +38,7 @@ public class SurfDetector {
 
       ObjectFinder.Settings settings = new ObjectFinder.Settings();
       settings.setObjectImage(object);
+      
       //settings.setUseFLANN(true);
       ObjectFinder finder = new ObjectFinder(settings);
 
@@ -81,6 +82,7 @@ public class SurfDetector {
 
    		// show image on window
    		canvas.showImage(correspond);
+   		cvWaitKey();
    		
       /*CanvasFrame objectFrame = new CanvasFrame("Object");
       CanvasFrame correspondFrame = new CanvasFrame("Object Correspond");

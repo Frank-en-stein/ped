@@ -13,37 +13,47 @@ import processing.opengl.*;
 public class CamViewer extends PApplet{
 
 	private static final long serialVersionUID = 1L;
-	// TODO: Local folder 
-	String sketchBookFolder = "/net/cremi/tmanson/ped-workspace/PED/src/camViewer";
-	String calibrationBoardL = sketchBookFolder + "/data/my_markerboarda3v1.cfg";
-	String[] boards = new String[1];
-
-	////////////// Camera parameters //////////////////////////////
-
-	int cameraHiRes = 1;
-	// int cameraHiX = 1712;
-	// int cameraHiY = 960;
-
-	int cameraHiX = 640;
-	int cameraHiY = 480;
-
-	////////////// Paper sheet parameters ////////////////////////
-
-	int paperSheetWidth = 297;
-	int paperSheetHeight = 210;
-
-
-	CamHiRes camHiRes;
-	CamHiResThread camHiResThread;
-
-
-	String videoFileName = "/net/cremi/tmanson/ped/videos/capture.avi";
-	boolean useVideo = true;
-
-	Extractor ext = new Extractor();
-
-
+	private String sketchBookFolder;
+	private String calibrationBoardL;
+	String[] boards;
+	private int cameraHiRes;
+	private int cameraHiX;
+	private int cameraHiY;
+	private int paperSheetWidth;
+	private int paperSheetHeight;
+	private CamHiRes camHiRes;
+	private CamHiResThread camHiResThread;
+	private String videoFileName;
+	private boolean useVideo;
+	private Extractor ext;
+	
 	public void setup(){ 
+		// TODO: Local folder 
+		
+		sketchBookFolder = sketchPath + "/../src/camViewer";
+		calibrationBoardL = sketchBookFolder + "/data/my_markerboarda3v1.cfg";
+		boards = new String[1];
+		
+		////////////// Camera parameters //////////////////////////////
+
+		cameraHiRes = 1;
+		// int cameraHiX = 1712;
+		// int cameraHiY = 960;
+
+		cameraHiX = 640;
+		cameraHiY = 480;
+
+		////////////// Paper sheet parameters ////////////////////////
+
+		paperSheetWidth = 297;
+		paperSheetHeight = 210;
+
+		videoFileName = "/net/cremi/nmestrea/ped/Ressources/capture.avi";
+		useVideo = true;
+
+		ext = new Extractor();
+
+		
 		size(cameraHiX, cameraHiY, P3D);
 
 		// A4  21. * 29.7 cm.

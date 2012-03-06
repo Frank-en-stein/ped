@@ -31,7 +31,7 @@ public class Detector{
 		templateNames[1] = "man2.jpg";
 		templateNames[2] = "rect.jpg";
 		templateNames[3] = "rect2.jpg";
-		templateNames[4] = "tieFighter.jpg";
+		templateNames[4] = "tieFighter_gross2.jpg";
 
 		System.out.println("Chargement image principale");
 		img=cvLoadImage(imgFolder+imgName,1);
