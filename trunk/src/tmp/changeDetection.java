@@ -1,25 +1,11 @@
 package tmp;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-
-import org.omg.CORBA.IMP_LIMIT;
-
-import processing.core.PImage;
-
 import com.googlecode.javacv.CanvasFrame;
-import com.googlecode.javacv.cpp.opencv_core.CvMatArray;
-import com.googlecode.javacv.cpp.opencv_core.CvPoint;
 import com.googlecode.javacv.cpp.opencv_core.CvScalar;
 import com.googlecode.javacv.cpp.opencv_core.CvSize;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
-import com.googlecode.javacv.cpp.*;
 import static com.googlecode.javacv.cpp.opencv_core.*;
 import static com.googlecode.javacv.cpp.opencv_imgproc.*;
 import static com.googlecode.javacv.cpp.opencv_highgui.*;
-import static com.googlecode.javacv.cpp.opencv_legacy.*;
 
 public class changeDetection {
 
@@ -46,10 +32,9 @@ public class changeDetection {
 	public static IplImage difference(IplImage image1, IplImage image2){
 
 		IplImage res= cvCreateImage(image1.cvSize(), image1.depth(), image1.nChannels());
-		IntBuffer buff1 = image1.getIntBuffer();
-		IntBuffer buff2 = image2.getIntBuffer();
+		image1.getIntBuffer();
+		image2.getIntBuffer();
 		for (int i = 0; i < image1.width() * image1.height(); i++) {
-			int index = i;
 			CvScalar p1 = cvGet1D(image1, i);
 			CvScalar p2 = cvGet1D(image2, i);
 			double b1 = 255-p1.getVal(0);
@@ -64,8 +49,7 @@ public class changeDetection {
 	public static void main(String[] args) {
 		IplImage im1 = cvLoadImage("/net/cremi/tmanson/ped-workspace/PED/Ressources/debian girl/capImage1-26.png",CV_LOAD_IMAGE_GRAYSCALE);
 		IplImage im2 = cvLoadImage("/net/cremi/tmanson/ped-workspace/PED/Ressources/debian girl/capImage1-32.png",CV_LOAD_IMAGE_GRAYSCALE);
-		int size = im1.height()*im1.width();
-		IplImage new_areas= cvCreateImage(im1.cvSize(), im1.depth(), im1.nChannels());
+		cvCreateImage(im1.cvSize(), im1.depth(), im1.nChannels());
 		CvSize tmpSize = new CvSize();
 		tmpSize.width(im1.width()/10);
 		tmpSize.height(im1.height()/10);
@@ -94,14 +78,13 @@ public class changeDetection {
 	private static IplImage correlation(IplImage im1, IplImage im2) {
 		/// Global Variables
 
-		IplImage result;
 		int AREA_SIZE = im1.width()/10;
 
 		CvSize size = new CvSize();
 		size.width(im1.width()-AREA_SIZE+1);
 		size.height(im1.height()-AREA_SIZE+1);
 
-		result = cvCreateImage(size, IPL_DEPTH_32F, 1);
+		cvCreateImage(size, IPL_DEPTH_32F, 1);
 
 		IplImage tpl1,tpl2;
 		CvSize tplSize = new CvSize();
