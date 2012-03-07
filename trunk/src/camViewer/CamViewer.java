@@ -1,14 +1,5 @@
 package camViewer;
-import com.googlecode.javacpp.Loader;
-import com.googlecode.javacv.*;
-import com.googlecode.javacv.cpp.*;
-import com.googlecode.javacv.processing.*;
-
-import java.util.concurrent.Semaphore;
-import javax.media.opengl.GL;
-
 import processing.core.*;
-import processing.opengl.*;
 
 public class CamViewer extends PApplet{
 

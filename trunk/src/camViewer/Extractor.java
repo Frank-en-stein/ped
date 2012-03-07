@@ -2,18 +2,18 @@ package camViewer;
 
 import java.util.LinkedList;
 
+import Filter.FilterFactory;
+import Filter.Grayscale;
+
 import com.googlecode.javacv.CanvasFrame;
 import com.googlecode.javacv.cpp.opencv_core.CvSize;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
 
 import static com.googlecode.javacv.cpp.opencv_core.*;
 import static com.googlecode.javacv.cpp.opencv_highgui.*;
-import static com.googlecode.javacv.cpp.opencv_imgproc.*;
-
 import com.googlecode.javacv.processing.Utils;
 
 import processing.core.PImage;
-import tmp.Filter;
 
 public class Extractor extends Thread {
 	private boolean stop = false; 
@@ -40,16 +40,19 @@ public class Extractor extends Thread {
 				IplImage iplImg = cvCreateImage(size, IPL_DEPTH_8U, 3);
 				Utils.PImageToIplImage(pimg, iplImg, true);
 				
+				Grayscale filter = (Grayscale) FilterFactory.getFilter(FilterFactory.GRAYSCALED);
+				IplImage iplImgGray = cvCreateImage(size, IPL_DEPTH_8U, 1);
+				filter.filter(iplImg, iplImgGray);
+				
 				if(background==null && iplImg!=null)
 					background = iplImg;
 
 				// traitement
 				//iplImg = Filter.process(iplImg);
-				IplImage scene = cvLoadImage("/net/cremi/nmestrea/espaces/travail/ped/Ressources/scan_rotate.jpg",CV_LOAD_IMAGE_GRAYSCALE);
-				IplImage template = cvLoadImage("/net/cremi/nmestrea/espaces/travail/ped/Ressources/man.jpg",CV_LOAD_IMAGE_GRAYSCALE); 
+				IplImage scene = cvLoadImage("/net/cremi/nmestrea/espaces/travail/ped/box_in_scene_out.png",CV_LOAD_IMAGE_GRAYSCALE);
+				IplImage template = cvLoadImage("/net/cremi/nmestrea/espaces/travail/ped/box_out.png",CV_LOAD_IMAGE_GRAYSCALE); 
 				tmp.Detector detector = new tmp.SurfDetector();
 				detector.addTemplate(template);
-				
 				IplImage result = detector.Detect(scene);
 				
 				final CanvasFrame canvas = new CanvasFrame("My Image",1);
