@@ -1,18 +1,9 @@
 package camViewer;
 
-import static com.googlecode.javacv.cpp.opencv_core.*;
-import static com.googlecode.javacv.cpp.opencv_imgproc.*;
-import static com.googlecode.javacv.cpp.opencv_calib3d.*;
-import static com.googlecode.javacv.cpp.opencv_objdetect.*;
-import static com.googlecode.javacv.cpp.ARToolKitPlus.Tracker;
 import processing.core.*;
 
 
 import com.googlecode.javacv.CameraDevice;
-import com.googlecode.javacv.Marker;
-import com.googlecode.javacv.MarkerDetector;
-import com.googlecode.javacv.OpenCVFrameGrabber;
-import com.googlecode.javacv.ProjectorDevice;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
 
 import com.googlecode.javacv.processing.*;
@@ -163,7 +154,6 @@ class CamHiRes{
 
     public PImage getPaperView(int id){
 	float[][] allPos = art.findMultiMarkers(true, false);
-	int k=0;
 	PaperSheet ps = sheets[id];
 	ps.setPos(allPos[id]);
 	ps.computeCorners(this);
