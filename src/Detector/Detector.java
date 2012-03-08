@@ -1,4 +1,4 @@
-package tmp;
+package Detector;
 
 import java.util.LinkedList;
 

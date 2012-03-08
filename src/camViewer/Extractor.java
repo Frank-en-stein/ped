@@ -2,6 +2,7 @@ package camViewer;
 
 import java.util.LinkedList;
 
+import Detector.*;
 import Filter.FilterFactory;
 import Filter.Grayscale;
 
@@ -51,7 +52,7 @@ public class Extractor extends Thread {
 				//iplImg = Filter.process(iplImg);
 				IplImage scene = cvLoadImage("/net/cremi/nmestrea/espaces/travail/ped/box_in_scene_out.png",CV_LOAD_IMAGE_GRAYSCALE);
 				IplImage template = cvLoadImage("/net/cremi/nmestrea/espaces/travail/ped/box_out.png",CV_LOAD_IMAGE_GRAYSCALE); 
-				tmp.Detector detector = new tmp.SurfDetector();
+				Detector detector = new SurfDetector();
 				detector.addTemplate(template);
 				IplImage result = detector.Detect(scene);
 				
