@@ -18,8 +18,8 @@ public class CamHiResThread extends Thread{
 			  int vw, int vh,
 			  int imgW, int imgH,
 			  PVector paperSize,
-			  String calibrationYAML, String calibrationData){
-	cam = new CamHiRes(parent, camNo, vw, vh, imgW, imgH, paperSize, calibrationYAML, calibrationData);
+			  String calibrationYAML, String calibrationData,String boards){
+	cam = new CamHiRes(parent, camNo, vw, vh, imgW, imgH, paperSize, calibrationYAML, calibrationData,boards);
 
     }
 

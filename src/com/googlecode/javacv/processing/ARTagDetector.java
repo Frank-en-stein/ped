@@ -111,7 +111,7 @@ public class ARTagDetector {
                 }
             };
 
-            ARToolKitPlus.Logger log = new ARToolKitPlus.Logger(null);
+            ARToolKitPlus.Logger log = new ARToolKitPlus.Logger();
 
             File f1 = new File(cameraFile);
             File f2 = new File(boardFile);
@@ -157,7 +157,7 @@ public class ARTagDetector {
             tracker.setUseDetectLite(false);
 //            tracker.setUseDetectLite(true);
 
-            if (!tracker.init(cameraFile, boardFile, 1.0f, 1000.f, log)) {
+            if (!tracker.init(cameraFile, boardFile, 1.0, 1000.0, log)) {
                 throw new Exception("Init ARTOOLKIT Error");
             }
 
@@ -312,7 +312,7 @@ public class ARTagDetector {
                 //            int pixfmt = ARToolKitPlus.PIXEL_FORMAT_LUM;
                 int pixfmt = ARToolKitPlus.PIXEL_FORMAT_BGR;
 
-                trackers[k].setPixelFormat(pixfmt);
+               trackers[k].setPixelFormat(pixfmt);
                 trackers[k].setBorderWidth(0.125f);
                 trackers[k].activateAutoThreshold(true);
                 trackers[k].setUndistortionMode(ARToolKitPlus.UNDIST_NONE);
@@ -322,7 +322,7 @@ public class ARTagDetector {
                 trackers[k].setUseDetectLite(false);
                
                 
-                if (!trackers[k].init(cameraFile, name, 1.0f, 1000.f, log)) {
+                if (!trackers[k].init(cameraFile, name, 1.0f, 1000.0f, log)) {
                     throw new Exception("Init ARTOOLKIT Error");
                 }
 

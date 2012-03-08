@@ -16,6 +16,7 @@ import static com.googlecode.javacv.cpp.opencv_core.*;
 import static com.googlecode.javacv.cpp.opencv_calib3d.*;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -153,13 +154,31 @@ public class Utils {
 				ret.pixels[i] = (buff.get(offset + 2) & 0xFF) << 16
 						| (buff.get(offset + 1) & 0xFF) << 8
 						| (buff.get(offset) & 0xFF);
-
+				/*CvScalar p = cvGet1D(img, i);
+				ret.pixels[i] = (int) p.getVal(0);*/
 			}
 
 		}
 		ret.updatePixels();
 		//   return ret;
 	}
+
+	public static PImage toPImage (IplImage iplImgIn) { // reçoit un IplImage et renvoie un PImage
+
+		  //--- récupérer l'objet IplImage dans un BufferedImage 
+		  BufferedImage bufImg=iplImgIn.getBufferedImage(); // récupère IplImage dans un objet BufferedImage transitoire
+
+		  //---- créer un PImage --- 
+		  PImage imgOut = new PImage(iplImgIn.width(),iplImgIn.height(), PApplet.RGB); // création d'un PImage de même taille que IplImage
+
+		  // charge les pixels de l'image buffer dans le tableau  imgOut.pixels du PImage
+		  bufImg.getRGB(0, 0, iplImgIn.width(), iplImgIn.height(), imgOut.pixels, 0,iplImgIn.width()); 
+
+		  imgOut.updatePixels(); // met à jour le PImage
+
+		  return(imgOut); // renvoie le PImage
+
+		} // fin toPImage
 
 	/** 
 	 * Convertit une Pimage en IplImage
