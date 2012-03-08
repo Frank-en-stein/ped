@@ -137,6 +137,7 @@ ext.start();
 
 		if(key == 'a')
 			saveImages = true;
+		
 	}
 
 

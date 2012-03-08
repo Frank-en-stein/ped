@@ -27,6 +27,7 @@ public class SurfDetector extends Detector{
 
 			ObjectFinder.Settings settings = new ObjectFinder.Settings();
 			settings.setObjectImage(object);
+			settings.setHessianThreshold(400);
 
 			//settings.setUseFLANN(true);
 			ObjectFinder finder = null;
@@ -40,7 +41,7 @@ public class SurfDetector extends Detector{
 				long start = System.currentTimeMillis();
 				double[] dst_corners = finder.find(scene);
 				System.out.println("Finding time = " + (System.currentTimeMillis() - start) + " ms");
-
+				
 				if (dst_corners !=  null) {
 					for (int i = 0; i < 4; i++) {
 						int j = (i+1)%4;
@@ -48,9 +49,10 @@ public class SurfDetector extends Detector{
 						int y1 = (int)Math.round(dst_corners[2*i + 1]);
 						int x2 = (int)Math.round(dst_corners[2*j    ]);
 						int y2 = (int)Math.round(dst_corners[2*j + 1]);
+						System.out.println("("+x1+","+y1+") ; ("+x2+","+y2+")");
 						cvLine(result, cvPoint(x1, y1),
 								cvPoint(x2, y2),
-								CvScalar.RED, 5, 8, 0);
+								CvScalar.RED, 2, 8, 0);
 					}
 				}
 			}
