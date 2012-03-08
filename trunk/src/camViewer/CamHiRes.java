@@ -9,7 +9,7 @@ import com.googlecode.javacv.cpp.opencv_core.IplImage;
 import com.googlecode.javacv.processing.*;
 
 
-class CamHiRes{
+public class CamHiRes{
 
     protected int vw, vh, imgW, imgH;
 
@@ -30,7 +30,7 @@ class CamHiRes{
 		    int vw, int vh,
 		    int imgW, int imgH,
 		    PVector paperSize,
-		    String calibrationYAML, String calibrationData){
+		    String calibrationYAML, String calibrationData, String boards){
 
 
 	//////// Augmented Reality initialization ///////////
@@ -43,7 +43,7 @@ class CamHiRes{
 	
 	art = new ARTagDetector(camNo, vw, vh, 60, calibrationYAML,
 				calibrationData,
-				((CamViewer) parent).boards);
+				boards);
 	// TODO: only 2 boards
 
 	paperL = new PaperSheet(paperSize.x, paperSize.y, imgW, imgH, vw, vh); 
@@ -77,7 +77,7 @@ class CamHiRes{
 		    int vw, int vh,
 		    int imgW, int imgH,
 		    PVector paperSize,
-		    String calibrationYAML, String calibrationData){
+		    String calibrationYAML, String calibrationData, String[] boards){
 
 
 	//////// Augmented Reality initialization ///////////
@@ -89,7 +89,7 @@ class CamHiRes{
 	
 	art = new ARTagDetector(videoFile, vw, vh, 60, calibrationYAML,
 				calibrationData,
-				((CamViewer) parent).boards);
+				boards);
 	// TODO: only 2 boards
 
 	paperL = new PaperSheet(paperSize.x, paperSize.y, imgW, imgH, vw, vh); 

@@ -1,9 +1,17 @@
-package camViewer;
-import processing.core.*;
+package samples;
 
-public class CamViewer extends PApplet{
+import camViewer.CamHiRes;
+import camViewer.CamHiResThread;
+import camViewer.Extractor2;
+import controlP5.ControlEvent;
+import controlP5.ControlP5;
+import controlP5.ListBox;
+import processing.core.*;;
+
+public class CamExtractor extends PApplet{
 
 	private static final long serialVersionUID = 1L;
+	// PLAYER 
 	private String sketchBookFolder;
 	private String calibrationBoardL;
 	String[] boards;
@@ -16,20 +24,28 @@ public class CamViewer extends PApplet{
 	private CamHiResThread camHiResThread;
 	private String videoFileName;
 	private boolean useVideo;
-	private Extractor ext;
-	
-	public void setup(){ 
+	private Extractor2 ext;
+
+	//GUI
+	ControlP5 controlP5;
+	ListBox listimg;
+
+	int buttonValue = 1;
+
+	public void setup() {
+
+		// player
 		// TODO: Local folder 
-		
+
 		sketchBookFolder = sketchPath + "/../src/camViewer";
 		calibrationBoardL = sketchBookFolder + "/data/my_markerboarda3v1.cfg";
 		boards = new String[1];
-		
+
 		////////////// Camera parameters //////////////////////////////
 
 		cameraHiRes = 1;
-		// int cameraHiX = 1712;
-		// int cameraHiY = 960;
+		//cameraHiX = 1712;
+		//cameraHiY = 960;
 
 		cameraHiX = 640;
 		cameraHiY = 480;
@@ -42,10 +58,10 @@ public class CamViewer extends PApplet{
 		videoFileName = "/net/cremi/tmanson/ped/videos/capture.avi";
 		useVideo = true;
 
-		ext = new Extractor();
+		ext = new Extractor2();
 
-		
-		size(cameraHiX, cameraHiY, P3D);
+
+		size(cameraHiX*2+100, cameraHiY, P2D);
 
 		// A4  21. * 29.7 cm.
 		//  paperSheet = new PaperSheet(paperSheetWidth, paperSheetHeight, 4);
@@ -80,26 +96,57 @@ public class CamViewer extends PApplet{
 
 		camHiResThread = new CamHiResThread(camHiRes);  
 		camHiResThread.start();
-ext.start();
-		//frameRate(200);
+		ext.start();
+
+
+		// GUI
+		controlP5 = new ControlP5(this);
+		//controlP5.addButton("shot").setId(1);
+		listimg = controlP5.addListBox("imgList", cameraHiX, 0, 100, cameraHiX);
+		listimg.setItemHeight(23);
+		
+
+		String[][] s = new String[3][];
+		s[0] = new String[] {
+				"a","b","c","d"
+		};
+		s[1] = new String[] {
+				"a","b","c","d","e","f","g","h","i","j","k","l","m","n"
+		};
+		s[2] = new String[] {
+				"l","m","n"
+		};
+
+		for(int i=0;i<s[1].length;i++) {
+			listimg.addItem(s[1][i],i);
+			
+		}
 	}
 
-
 	int currentImageSave = 0;
+	private PImage computedRes = null;
 
-	public void draw(){
+	public void draw() {
 
 		background(0);
 
+		hint(ENABLE_DEPTH_TEST);
 		if(test)
 			camHiResThread.dropImages();
 		else
 			camHiResThread.filmImages();
+		if(!ext.outQueue.isEmpty())
+			computedRes = ext.outQueue.getFirst();
+		if(ext.outQueue.size()>1)
+			ext.outQueue.removeFirst();
 
 		PImage camView = camHiResThread.getImage(0);    
 
 		if(camView != null) 
 			image(camView, 0, 0);
+		if(computedRes != null){
+			image(computedRes , cameraHiX+100, 0);
+		}
 
 		if(saveImages){
 			PImage im0 = camHiResThread.getImage(0);
@@ -109,15 +156,39 @@ ext.start();
 				//out1.save("capImage1-"+ currentImageSave++ +".png");
 				//println("Image sauvée, id : "+ (currentImageSave-1));
 				//	    camView[0].save("/dev/shm/capRight.png");
-				ext.file.addLast(out1);
+				ext.inQueue.addLast(out1);
 				System.out.println("Image Pushed");
 				saveImages = false;
 			}
 		}
 
+		// makes the gui stay on top of elements
+		// drawn before.
+		hint(DISABLE_DEPTH_TEST);
+
+		controlP5.draw();
 	}
 
 
+
+	public void controlEvent(ControlEvent theEvent) {
+		// ListBox is if type ControlGroup.
+		// 1 controlEvent will be executed, where the event
+		// originates from a ControlGroup. therefore
+		// you need to check the Event with
+		// if (theEvent.isGroup())
+		// to avoid an error message from controlP5.
+
+		if (theEvent.isGroup()) {
+			// an event from a group e.g. scrollList
+			println(theEvent.group().value()+" from "+theEvent.group());
+		}
+	}
+
+	void shot(float theValue) {
+		println(theValue);
+	}
+	
 	// DEBUG VARIABLES
 	boolean test = false;
 	int skip = 0;
@@ -137,14 +208,11 @@ ext.start();
 
 		if(key == 'a')
 			saveImages = true;
-		
 	}
 
 
 	public void stop() {
 		super.stop();
 	}
+
 }
-
-
-
