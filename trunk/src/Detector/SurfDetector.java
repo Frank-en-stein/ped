@@ -21,13 +21,17 @@ public class SurfDetector extends Detector{
 
 		for(int t=0; t<templates.size() ; t++){
 			IplImage object = getTemplate(t);
+			System.out.println("Nb templates : "+templates.size());
+			System.out.println("Template n°"+t);
 
 			IplImage objectColor = IplImage.create(object.width(), object.height(), 8, 3);
 			cvCvtColor(object, objectColor, CV_GRAY2BGR);
 
 			ObjectFinder.Settings settings = new ObjectFinder.Settings();
 			settings.setObjectImage(object);
-			settings.setHessianThreshold(400);
+			settings.setHessianThreshold(600);
+			//settings.setDistanceThreshold(0.1);
+			settings.setExtended(true);
 
 			//settings.setUseFLANN(true);
 			ObjectFinder finder = null;
@@ -52,7 +56,7 @@ public class SurfDetector extends Detector{
 						System.out.println("("+x1+","+y1+") ; ("+x2+","+y2+")");
 						cvLine(result, cvPoint(x1, y1),
 								cvPoint(x2, y2),
-								CvScalar.RED, 2, 8, 0);
+								CvScalar.RED, 10, 8, 0);
 					}
 				}
 			}

@@ -50,16 +50,17 @@ public class Extractor extends Thread {
 
 				// traitement
 				//iplImg = Filter.process(iplImg);
-				//IplImage scene = cvLoadImage("/net/cremi/nmestrea/espaces/travail/ped/Ressources/scan_rotate.jpg",CV_LOAD_IMAGE_GRAYSCALE);
-				IplImage template = cvLoadImage("/net/cremi/nmestrea/espaces/travail/ped/Ressources/man2.jpg",CV_LOAD_IMAGE_GRAYSCALE); 
-				//IplImage template2 = cvLoadImage("/net/cremi/nmestrea/espaces/travail/ped/Ressources/tieFighter.jpg",CV_LOAD_IMAGE_GRAYSCALE);
-				Detector detector = new MatchingDetector();
+				IplImage scene = cvLoadImage("../Ressources/scan.jpg",CV_LOAD_IMAGE_GRAYSCALE);
+				IplImage template = cvLoadImage("../Ressources/templates/man2.jpg",CV_LOAD_IMAGE_GRAYSCALE); 
+				IplImage template2 = cvLoadImage("../Ressources/templates/tieFighter.jpg",CV_LOAD_IMAGE_GRAYSCALE);
+				Detector detector = new SurfDetector();
 				detector.addTemplate(template);
-				//detector.addTemplate(template2);
-				IplImage result = detector.Detect(iplImgGray);
+				detector.addTemplate(template2);
+				IplImage result = detector.Detect(scene);
 				
 				final CanvasFrame canvas = new CanvasFrame("My Image",1);
 				canvas.setCanvasSize(640, 480);
+				canvas.setLocation(640, 100);
 				canvas.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
 
 				// show image on window
