@@ -30,7 +30,7 @@ public class Extractor extends Thread {
 	public void run(){
 		
 		while(!stop || !file.isEmpty()){
-			System.out.println("");
+			System.out.flush();
 			if(!file.isEmpty()){
 				System.out.println("traitement");
 				// recupération de l'image
@@ -50,11 +50,13 @@ public class Extractor extends Thread {
 
 				// traitement
 				//iplImg = Filter.process(iplImg);
-				IplImage scene = cvLoadImage("/net/cremi/nmestrea/espaces/travail/ped/box_in_scene_out.png",CV_LOAD_IMAGE_GRAYSCALE);
-				IplImage template = cvLoadImage("/net/cremi/nmestrea/espaces/travail/ped/box_out.png",CV_LOAD_IMAGE_GRAYSCALE); 
-				Detector detector = new SurfDetector();
+				//IplImage scene = cvLoadImage("/net/cremi/nmestrea/espaces/travail/ped/Ressources/scan_rotate.jpg",CV_LOAD_IMAGE_GRAYSCALE);
+				IplImage template = cvLoadImage("/net/cremi/nmestrea/espaces/travail/ped/Ressources/man2.jpg",CV_LOAD_IMAGE_GRAYSCALE); 
+				//IplImage template2 = cvLoadImage("/net/cremi/nmestrea/espaces/travail/ped/Ressources/tieFighter.jpg",CV_LOAD_IMAGE_GRAYSCALE);
+				Detector detector = new MatchingDetector();
 				detector.addTemplate(template);
-				IplImage result = detector.Detect(scene);
+				//detector.addTemplate(template2);
+				IplImage result = detector.Detect(iplImgGray);
 				
 				final CanvasFrame canvas = new CanvasFrame("My Image",1);
 				canvas.setCanvasSize(640, 480);
