@@ -2,7 +2,6 @@ package samples;
 
 import camViewer.CamHiRes;
 import camViewer.CamHiResThread;
-import camViewer.Extractor2;
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import controlP5.ListBox;
@@ -11,6 +10,7 @@ import processing.core.*;;
 public class CamExtractor extends PApplet{
 
 	private static final long serialVersionUID = 1L;
+	private static final int NB_MAX_IMAGES = 100;
 	// PLAYER 
 	private String sketchBookFolder;
 	private String calibrationBoardL;
@@ -24,7 +24,6 @@ public class CamExtractor extends PApplet{
 	private CamHiResThread camHiResThread;
 	private String videoFileName;
 	private boolean useVideo;
-	private Extractor2 ext;
 
 	//GUI
 	ControlP5 controlP5;
@@ -57,9 +56,6 @@ public class CamExtractor extends PApplet{
 
 		videoFileName = "/net/cremi/tmanson/ped/videos/capture.avi";
 		useVideo = true;
-
-		ext = new Extractor2();
-
 
 		size(cameraHiX*2+100, cameraHiY, P2D);
 
@@ -96,120 +92,83 @@ public class CamExtractor extends PApplet{
 
 		camHiResThread = new CamHiResThread(camHiRes);  
 		camHiResThread.start();
-		ext.start();
-
+		
+		takenImages = new PImage[NB_MAX_IMAGES];
+		computedImages = new PImage[NB_MAX_IMAGES];
+		comp = new ComputeThread[NB_MAX_IMAGES];
 
 		// GUI
 		controlP5 = new ControlP5(this);
-		//controlP5.addButton("shot").setId(1);
-		listimg = controlP5.addListBox("imgList", cameraHiX, 0, 100, cameraHiX);
+		controlP5.addButton("shot").setId(1);
+		listimg = controlP5.addListBox("imgList", cameraHiX, 0, 100, cameraHiY);
+		listimg.captionLabel().multiline(true);
 		listimg.setItemHeight(23);
-		
-
-		String[][] s = new String[3][];
-		s[0] = new String[] {
-				"a","b","c","d"
-		};
-		s[1] = new String[] {
-				"a","b","c","d","e","f","g","h","i","j","k","l","m","n"
-		};
-		s[2] = new String[] {
-				"l","m","n"
-		};
-
-		for(int i=0;i<s[1].length;i++) {
-			listimg.addItem(s[1][i],i);
-			
-		}
 	}
 
-	int currentImageSave = 0;
-	private PImage computedRes = null;
-
+	private PImage camView;
+	private PImage resultImage = null;
 	public void draw() {
-
 		background(0);
 
 		hint(ENABLE_DEPTH_TEST);
-		if(test)
-			camHiResThread.dropImages();
-		else
+		if(play)
 			camHiResThread.filmImages();
-		if(!ext.outQueue.isEmpty())
-			computedRes = ext.outQueue.getFirst();
-		if(ext.outQueue.size()>1)
-			ext.outQueue.removeFirst();
 
-		PImage camView = camHiResThread.getImage(0);    
-
+		// affiche la video
+		camView = camHiResThread.getImage(0);    
 		if(camView != null) 
 			image(camView, 0, 0);
-		if(computedRes != null){
-			image(computedRes , cameraHiX+100, 0);
-		}
 
-		if(saveImages){
-			PImage im0 = camHiResThread.getImage(0);
-			if(im0 != null) {
-				PImage out1 = createImage(cameraHiX, cameraHiY, RGB);
-				out1.set(0, 0, im0.get());
-				//out1.save("capImage1-"+ currentImageSave++ +".png");
-				//println("Image sauvée, id : "+ (currentImageSave-1));
-				//	    camView[0].save("/dev/shm/capRight.png");
-				ext.inQueue.addLast(out1);
-				System.out.println("Image Pushed");
-				saveImages = false;
-			}
-		}
+		// affichage resultat
+		if(resultImage != null)
+			image(resultImage , cameraHiX+100, 0);
 
-		// makes the gui stay on top of elements
-		// drawn before.
+		// makes the gui stay on top of elements drawn before.
 		hint(DISABLE_DEPTH_TEST);
 
 		controlP5.draw();
 	}
 
+	int nbFrames = 0;
+	private PImage[] takenImages;
+	private PImage[] computedImages;
+	ComputeThread[] comp;
+	void shot(float theValue) {
+		listimg.addItem("Image n°"+Integer.toString(nbFrames),nbFrames);
 
+		camHiResThread.pause();
+		if(camView != null) {
+			takenImages[nbFrames] = createImage(cameraHiX, cameraHiY, RGB);
+			takenImages[nbFrames].set(0, 0, camView.get());
+			//out1.save("capImage1-"+ currentImageSave++ +".png");
+			//println("Image sauvée, id : "+ (currentImageSave-1));
+			//	    camView[0].save("/dev/shm/capRight.png");
+
+			comp[nbFrames] = new ComputeThread(takenImages[nbFrames],computedImages[nbFrames]);
+			comp[nbFrames].setDaemon(true);
+			comp[nbFrames].start();
+		}
+		nbFrames++;
+	}
 
 	public void controlEvent(ControlEvent theEvent) {
-		// ListBox is if type ControlGroup.
-		// 1 controlEvent will be executed, where the event
-		// originates from a ControlGroup. therefore
-		// you need to check the Event with
-		// if (theEvent.isGroup())
-		// to avoid an error message from controlP5.
 
 		if (theEvent.isGroup()) {
-			// an event from a group e.g. scrollList
-			println(theEvent.group().value()+" from "+theEvent.group());
+			int ID = (int)theEvent.group().value();
+			resultImage = comp[ID].dst;
 		}
 	}
-
-	void shot(float theValue) {
-		println(theValue);
-	}
 	
-	// DEBUG VARIABLES
-	boolean test = false;
-	int skip = 0;
-
-	boolean stopProj = false;
-	boolean saveImages = false;
-
+	boolean play = true;
 	public void keyPressed() {
-
-		if(key == 't')
-			test = !test;
-
-		if(!test)
-			println("Taking images...");
-		else
-			println("dropping images");
-
-		if(key == 'a')
-			saveImages = true;
+		if(key == ' '){
+			play = !play;
+			if(play)
+				camHiResThread.filmImages();
+			else
+				camHiResThread.pause();
+		}
 	}
-
 
 	public void stop() {
 		super.stop();
