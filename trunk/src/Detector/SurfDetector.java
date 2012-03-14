@@ -53,7 +53,7 @@ public class SurfDetector extends Detector{
 		
 		ObjectFinder.Settings settings = new ObjectFinder.Settings();
 		settings.setObjectImage(template);	
-		settings.setHessianThreshold(600);
+		settings.setHessianThreshold(500);
 		//settings.setDistanceThreshold(0.1);
 		settings.setExtended(true);
 		
