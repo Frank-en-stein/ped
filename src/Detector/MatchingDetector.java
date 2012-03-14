@@ -12,7 +12,7 @@ import com.googlecode.javacv.cpp.opencv_core.IplImage;
 
 public class MatchingDetector extends Detector{
 	
-	private int matchMethod;
+	private int matchMethod = CV_TM_CCOEFF;
 	
 	public MatchingDetector() {
 		templates = new LinkedList<IplImage>();
@@ -39,9 +39,9 @@ public class MatchingDetector extends Detector{
 			tmp = cvCreateImage(size, IPL_DEPTH_32F, 1);
 			
 			long start = System.currentTimeMillis();
-			System.out.println("Scene : "+scene.width()+","+scene.height());
+			/*System.out.println("Scene : "+scene.width()+","+scene.height());
 			System.out.println("Templ : "+getTemplate(i).width()+","+getTemplate(i).height());
-			System.out.println("Tmp   : "+tmp.width()+","+tmp.height());
+			System.out.println("Tmp   : "+tmp.width()+","+tmp.height());*/
 			
 			cvMatchTemplate(scene, getTemplate(i), tmp, matchMethod);
 			cvNormalize(tmp, tmp, 0, 1, CV_MINMAX, null);
@@ -74,7 +74,7 @@ public class MatchingDetector extends Detector{
 			System.out.println("Finding time = " + (System.currentTimeMillis() - start) + " ms");
 			
 			// Creation Image résultat
-			double SEUIL_MATCHING = 0.90;
+			double SEUIL_MATCHING = 0.99;
 			if(matchMethod == CV_TM_SQDIFF || matchMethod == CV_TM_SQDIFF_NORMED){
 				if(cvGet2D(tmp, tempRect0.y(), tempRect0.x()).getVal(0)<=1.0-SEUIL_MATCHING){
 					cvRectangle( result, tempRect0, tempRect1, cvScalar( 1, 0, 0, 0 ), 2, 0, 0 ); 
