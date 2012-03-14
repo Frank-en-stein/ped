@@ -1,17 +1,18 @@
 package Detector;
 
 import static com.googlecode.javacv.cpp.opencv_core.*;
-import static com.googlecode.javacv.cpp.opencv_imgproc.*;
-
 import java.util.LinkedList;
 
 import com.googlecode.javacv.ObjectFinder;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
 
 public class SurfDetector extends Detector{
+	
+	protected LinkedList<ObjectFinder> finders;
 
 	public SurfDetector() {
 		templates = new LinkedList<IplImage>();
+		finders = new LinkedList<ObjectFinder>();
 	}
 	
 	@Override
@@ -19,28 +20,10 @@ public class SurfDetector extends Detector{
 		IplImage result;
 		result = scene.clone();
 
-		for(int t=0; t<templates.size() ; t++){
-			IplImage object = getTemplate(t);
-			System.out.println("Nb templates : "+templates.size());
-			System.out.println("Template n°"+t);
+		for(int t=0; t<finders.size() ; t++){
 
-			IplImage objectColor = IplImage.create(object.width(), object.height(), 8, 3);
-			cvCvtColor(object, objectColor, CV_GRAY2BGR);
-
-			ObjectFinder.Settings settings = new ObjectFinder.Settings();
-			settings.setObjectImage(object);
-			settings.setHessianThreshold(600);
-			//settings.setDistanceThreshold(0.1);
-			settings.setExtended(true);
-
-			//settings.setUseFLANN(true);
-			ObjectFinder finder = null;
-			try {
-				finder = new ObjectFinder(settings);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			ObjectFinder finder = finders.get(t);
+			
 			if (finder != null){
 				long start = System.currentTimeMillis();
 				double[] dst_corners = finder.find(scene);
@@ -64,6 +47,26 @@ public class SurfDetector extends Detector{
 
 		return result;
 	}
-
+	
+	public void addTemplate(IplImage template){
+		templates.add(template);
+		
+		ObjectFinder.Settings settings = new ObjectFinder.Settings();
+		settings.setObjectImage(template);	
+		settings.setHessianThreshold(600);
+		//settings.setDistanceThreshold(0.1);
+		settings.setExtended(true);
+		
+		ObjectFinder finder = null;
+		try {
+			finder = new ObjectFinder(settings);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		finders.add(finder);
+	}
 }
+
 
