@@ -39,7 +39,7 @@ public class CamViewer extends PApplet{
 		paperSheetWidth = 297;
 		paperSheetHeight = 210;
 
-		videoFileName = "/net/cremi/tmanson/ped/videos/capture.avi";
+		videoFileName = "/net/cremi/nmestrea/ped/Ressources/capture.avi";
 		useVideo = true;
 
 		ext = new Extractor();
@@ -106,7 +106,7 @@ ext.start();
 			if(im0 != null) {
 				PImage out1 = createImage(cameraHiX, cameraHiY, RGB);
 				out1.set(0, 0, im0.get());
-				//out1.save("capImage1-"+ currentImageSave++ +".png");
+				//out1.save("../Ressources/templates/capImage1-"+ currentImageSave++ +".jpg");
 				//println("Image sauvée, id : "+ (currentImageSave-1));
 				//	    camView[0].save("/dev/shm/capRight.png");
 				ext.file.addLast(out1);
