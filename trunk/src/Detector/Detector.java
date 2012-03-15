@@ -2,6 +2,7 @@ package Detector;
 
 import java.util.LinkedList;
 
+import com.googlecode.javacv.cpp.opencv_core.CvScalar;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
 
 public abstract class Detector {
@@ -19,6 +20,6 @@ public IplImage getTemplate(int indice){
 	return templates.get(indice);
 }
 
-public abstract IplImage Detect(IplImage scene);
+public abstract LinkedList<CvScalar> Detect(IplImage scene);
 
 }

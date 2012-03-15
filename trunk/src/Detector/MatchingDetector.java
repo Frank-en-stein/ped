@@ -26,9 +26,8 @@ public class MatchingDetector extends Detector{
 	}
 	
 	@Override
-	public IplImage Detect(IplImage scene) {
-		IplImage result;
-		result = scene.clone();
+	public LinkedList<CvScalar> Detect(IplImage scene) {
+		LinkedList<CvScalar> rectangles = new LinkedList<CvScalar>();
 		
 		for(int i=0 ; i<templates.size() ; i++){
 			CvSize size = new CvSize();
@@ -39,9 +38,6 @@ public class MatchingDetector extends Detector{
 			tmp = cvCreateImage(size, IPL_DEPTH_32F, 1);
 			
 			long start = System.currentTimeMillis();
-			/*System.out.println("Scene : "+scene.width()+","+scene.height());
-			System.out.println("Templ : "+getTemplate(i).width()+","+getTemplate(i).height());
-			System.out.println("Tmp   : "+tmp.width()+","+tmp.height());*/
 			
 			cvMatchTemplate(scene, getTemplate(i), tmp, matchMethod);
 			cvNormalize(tmp, tmp, 0, 1, CV_MINMAX, null);
@@ -55,39 +51,19 @@ public class MatchingDetector extends Detector{
 
 			cvMinMaxLoc (tmp, minVal, maxVal, minLoc, maxLoc, null );
 
-			CvPoint tempRect0 = new CvPoint();
-			CvPoint tempRect1 = new CvPoint();
-
 			if(matchMethod == CV_TM_SQDIFF || matchMethod == CV_TM_SQDIFF_NORMED){
-				tempRect0.x(minLoc.x());
-				tempRect0.y(minLoc.y());
-				tempRect1.x(minLoc.x() + getTemplate(i).width());
-				tempRect1.y(minLoc.y() + getTemplate(i).height());
+				CvScalar rect = cvScalar(minLoc.x(),minLoc.y(), getTemplate(i).width(), getTemplate(i).height());
+				rectangles.add(rect);
 			}
 
 			else{
-				tempRect0.x(maxLoc.x());
-				tempRect0.y(maxLoc.y());
-				tempRect1.x(maxLoc.x() + getTemplate(i).width());
-				tempRect1.y(maxLoc.y() + getTemplate(i).height());
+				CvScalar rect = cvScalar(maxLoc.x(),maxLoc.y(), getTemplate(i).width(), getTemplate(i).height());
+				rectangles.add(rect);
 			}
-			System.out.println("Finding time = " + (System.currentTimeMillis() - start) + " ms");
-			
-			// Creation Image résultat
-			double SEUIL_MATCHING = 0.99;
-			if(matchMethod == CV_TM_SQDIFF || matchMethod == CV_TM_SQDIFF_NORMED){
-				if(cvGet2D(tmp, tempRect0.y(), tempRect0.x()).getVal(0)<=1.0-SEUIL_MATCHING){
-					cvRectangle( result, tempRect0, tempRect1, cvScalar( 1, 0, 0, 0 ), 2, 0, 0 ); 
-				}
-			}
-			else{
-				if(cvGet2D(tmp, tempRect0.y(), tempRect0.x()).getVal(0)>=SEUIL_MATCHING){
-					cvRectangle( result, tempRect0, tempRect1, cvScalar( 1, 0, 0, 0 ), 2, 0, 0 ); 
-				}
-			}
+			System.out.println("Finding time = " + (System.currentTimeMillis() - start) + " ms");			
 		}
 		System.out.println("Prêt à afficher");
-		return result;
+		return rectangles;
 	}
 }
 

@@ -16,9 +16,8 @@ public class SurfDetector extends Detector{
 	}
 	
 	@Override
-	public IplImage Detect(IplImage scene) {
-		IplImage result;
-		result = scene.clone();
+	public LinkedList<CvScalar> Detect(IplImage scene) {
+		LinkedList<CvScalar> rectangles = new LinkedList<CvScalar>();
 
 		for(int t=0; t<finders.size() ; t++){
 
@@ -30,22 +29,31 @@ public class SurfDetector extends Detector{
 				System.out.println("Finding time = " + (System.currentTimeMillis() - start) + " ms");
 				
 				if (dst_corners !=  null) {
+					int xmin = Integer.MAX_VALUE;
+					int ymin = Integer.MAX_VALUE;
+					int xmax = -1;
+					int ymax = -1;
+					
 					for (int i = 0; i < 4; i++) {
-						int j = (i+1)%4;
-						int x1 = (int)Math.round(dst_corners[2*i    ]);
-						int y1 = (int)Math.round(dst_corners[2*i + 1]);
-						int x2 = (int)Math.round(dst_corners[2*j    ]);
-						int y2 = (int)Math.round(dst_corners[2*j + 1]);
-						System.out.println("("+x1+","+y1+") ; ("+x2+","+y2+")");
-						cvLine(result, cvPoint(x1, y1),
-								cvPoint(x2, y2),
-								CvScalar.RED, 10, 8, 0);
+						int x = (int)Math.round(dst_corners[2*i    ]);
+						int y = (int)Math.round(dst_corners[2*i + 1]);
+						if(x<xmin)
+							xmin = x;
+						if(x>xmax)
+							xmax = x;
+						if(y<ymin)
+							ymin = y;
+						if(y>ymax)
+							ymax = y;	
 					}
+					
+					CvScalar rect = cvScalar(xmin,ymin,xmax-xmin,ymax-ymin);
+					rectangles.add(rect);
 				}
 			}
 		}
 
-		return result;
+		return rectangles;
 	}
 	
 	public void addTemplate(IplImage template){
