@@ -4,10 +4,7 @@
  */
 package com.googlecode.javacv.processing;
 
-import com.googlecode.javacv.cpp.opencv_core.CvScalar;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
-import com.googlecode.javacv.cpp.opencv_imgproc.*;
-
 import com.googlecode.javacv.CameraDevice;
 import com.googlecode.javacv.ProjectorDevice;
 import com.googlecode.javacv.cpp.ARToolKitPlus.Tracker;
@@ -15,7 +12,6 @@ import com.googlecode.javacv.cpp.opencv_imgproc;
 import static com.googlecode.javacv.cpp.opencv_core.*;
 import static com.googlecode.javacv.cpp.opencv_calib3d.*;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
