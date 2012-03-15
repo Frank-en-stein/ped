@@ -1,4 +1,4 @@
-package samples;
+package samples.featureExtractor;
 
 import com.googlecode.javacv.cpp.opencv_core.CvSize;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
