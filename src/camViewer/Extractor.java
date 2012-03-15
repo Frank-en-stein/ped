@@ -55,7 +55,7 @@ public class Extractor extends Thread {
 				// traitement
 				//iplImg = Filter.process(iplImg);
 				//IplImage scene = cvLoadImage("../Ressources/scan.jpg",CV_LOAD_IMAGE_GRAYSCALE);
-				IplImage result = detector.Detect(iplImgGray);
+				//IplImage result = detector.Detect(iplImgGray);
 
 				final CanvasFrame canvas = new CanvasFrame("My Image",1);
 				canvas.setCanvasSize(640, 480);
@@ -63,7 +63,7 @@ public class Extractor extends Thread {
 				canvas.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
 
 				// show image on window
-				canvas.showImage(result);
+				//canvas.showImage(result);
 
 				System.out.println("Image Poped");
 			}
