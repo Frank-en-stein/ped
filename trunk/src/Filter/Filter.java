@@ -14,7 +14,7 @@ public abstract class Filter {
 	public final IplImage apply(IplImage src,Boolean copy){
 		IplImage dst;
 		if(copy)
-			dst = cvCreateImage(src.cvSize(), src.depth(), src.nChannels());
+			dst = src.clone();
 		else
 			dst = src;
 		if(filter(src,dst))

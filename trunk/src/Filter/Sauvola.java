@@ -65,7 +65,7 @@ public class Sauvola extends Filter {
 		final int dststep = dst.widthStep();
 
 		final int window =  size;
-		final double k = 0.02;
+		final double k = 0.05;
 		//for (int y = 0; y < h; y++) {
 			Parallel.loop(0, h, new Looper() {
 				public void loop(int from, int to, int looperID) {
