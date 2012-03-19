@@ -1,5 +1,7 @@
 package samples;
 
+import Filter.Sauvola;
+
 import com.googlecode.javacv.cpp.opencv_core.CvSize;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
 import static com.googlecode.javacv.cpp.opencv_imgproc.*;
@@ -29,7 +31,8 @@ public class ComputeThread extends Thread {
 		IplImage iplimg = cvCreateImage(size, IPL_DEPTH_8U, 1);
 		Utils.PImageToIplImage(src, iplimg, false);
 		cvEqualizeHist(iplimg, iplimg);
-
+		Sauvola sauvola = new Sauvola();
+		sauvola.apply(iplimg, false);
 
 		//cvThreshold(iplimg,iplimg,120.0,255.0,CV_THRESH_TOZERO);
 		// End process
