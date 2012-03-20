@@ -1,0 +1,28 @@
+\subsubsection{Traitements}
+
+\paragraph{Reconnaissance de formes simples}
+
+Afin de reconnaître des formes simples dans une vidéo, nous avons mis en place un système de détecteur.\\
+
+Nous avons implémenté deux détecteurs différents. Le premier s'appuie sur du "Template matching" pour reconnaître une forme. Le second utilise les descripteurs SURF.
+
+Template matching
+
+L'algorithme de template matching consiste à faire glisser un template sur la surface de l'image, et de calculer un coefficient de "corrélation" entre le template et la zone qu'il recouvre.
+
+Pour effectuer cette procédure, nous avons utilisé la fonction \texttt{cvMatchTemplate} d'OpenCV. Cette fonction retourne une image de corrélation, qui montre les endroits où le template a le plus correspondu à l'image. Après normalisation, nous parcourons cette image pour récupérer le minimum (ou maximum suivant la méthode passée en paramètre à cvMatchTemplate), ce minimum/maximum est l'endroit de meilleur matching.
+
+Pour éviter que deux templates trop proches détectent le même objet alors que deux objets sont valides, nous retirons la zone qui a matché le plus de l'image source.
+
+Nous initialisons le détecteur avec une liste de templates que nous avons prédéfinis.
+Lors de la détection on parcourt la liste des templates, et on calcule le meilleur matching pour chacun de ces templates.
+
+Problème : la normalisation entraîne des faux positifs lorsque le template ne matche pas un des objets de l'image.
+Solution au problème : Arriver à calculer un indice de confiance du matching. Si cet indice de confiance ne dépasse pas un seuil à définir, ne pas prendre en compte le résultat du matching pour ce template.
+Améliorations permises par la solution : Possibilité de boucler sur un template jusqu'à ce qu'il ne matche plus. Permet d'avoir un template par type d'objet, et non un template/un résultat positif comme à présent.
+
+SURF
+L'algorithme SURF consiste à calculer des descripteurs sur les templates ainsi que sur l'image. Une fois ces descripteurs calculés, on en fait quelque chose.
+
+"SURF[11] : Speeded Up Robust Features" is a high-performance scale and rotation-invariant interest point detector / descriptor claimed to approximate or even outperform previously proposed schemes with respect to repeatability, distinctiveness, and robustness. SURF relies on integral images for image convolutions to reduce computation time, builds on the strengths of the leading existing detectors and descriptors (using a fast Hessian matrix-based measure for the detector and a distribution-based descriptor). It describes a distribution of Haar wavelet responses within the interest point neighbourhood. Integral images are used for speed and only 64 dimensions are used reducing the time for feature computation and matching. The indexing step is based on the sign of the Laplacian, which increases the matching speed and the robustness of the descriptor.
+
