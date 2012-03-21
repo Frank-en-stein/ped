@@ -7,6 +7,7 @@ import Detector.Detector;
 import Detector.MatchingDetector;
 import Detector.SurfDetector;
 import Filter.Binarize;
+import Filter.Sauvola;
 import Filter.FilterFactory;
 import Filter.Grayscale;
 
@@ -44,6 +45,7 @@ public class ComputeThread extends Thread {
 						Binarize filterBinarize = new Binarize();
 						filterBinarize.apply(template, false);
 						
+						
 						CvSize size = new CvSize();
 						size.width(template.width());
 						size.height(template.height());
@@ -72,16 +74,20 @@ public class ComputeThread extends Thread {
 		Utils.PImageToIplImage(src, iplimg, true);
 
 		//preprocess
-		Binarize filter = new Binarize();
-		IplImage res = filter.apply(iplimg, true);
+		//Binarize filter = new Binarize();
+		//IplImage res = filter.apply(iplimg, true);
 		
+		IplImage res = iplimg.clone();
 		Grayscale filterGrayscale = (Grayscale) FilterFactory.getFilter(FilterFactory.GRAYSCALED);
 		IplImage resGray = cvCreateImage(size, IPL_DEPTH_8U, 1); 
 		filterGrayscale.filter(res, resGray);
 		
+		Sauvola filter = new Sauvola();
+		filter.apply(resGray, false);
+		
 		//detection
 		LinkedList<CvScalar> resultats = detector.Detect(resGray);
-		
+
 		for(int i=0 ; i<resultats.size() ; i++){
 			CvPoint p1 = new CvPoint();
 			CvPoint p2 = new CvPoint();
@@ -91,10 +97,12 @@ public class ComputeThread extends Thread {
 			p2.y((int)(resultats.get(i).getVal(1) + resultats.get(i).getVal(3)));
 			
 			cvRectangle(iplimg, p1, p2, cvScalar(1,0,0,0), 2, 0, 0);
+			cvRectangle(resGray, p1, p2, cvScalar(1,0,0,0), 2, 0, 0);
 		}
 				
 		// End process
 		this.dst = Utils.toPImage(iplimg);
+		//this.dst = Utils.toPImage(resGray);
 	}
 
 }

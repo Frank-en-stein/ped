@@ -1,27 +1,38 @@
-\subsubsection{Traitements}
-
-\paragraph{Reconnaissance de formes simples}
+\subsubsection{Reconnaissance de formes dessinées}
 
 Afin de reconnaître des formes simples dans une vidéo, nous avons mis en place un système de détecteur.\\
 
-Nous avons implémenté deux détecteurs différents. Le premier s'appuie sur du "Template matching" pour reconnaître une forme. Le second utilise les descripteurs SURF.
+Nous avons implémenté deux détecteurs différents. Le premier s'appuie sur du template matching pour reconnaître une forme. Le second utilise les descripteurs SURF.\\
 
-Template matching
+Pour faire ainsi, nous avons mis en place une classe abstraite \texttt{Detector} qui présente les fonctions de base d'un détecteur, à savoir ajouter, récupérer ou supprimer un template, et définit la fonction permettant de lancer la détection.
+Chacun de nos détecteurs (\texttt{MatchingDetector et SurfDetector} doit donc implémenter cette fonction de détection.
 
-L'algorithme de template matching consiste à faire glisser un template sur la surface de l'image, et de calculer un coefficient de "corrélation" entre le template et la zone qu'il recouvre.
+\paragraph{Template matching\vspace{0.5cm}\\}
 
-Pour effectuer cette procédure, nous avons utilisé la fonction \texttt{cvMatchTemplate} d'OpenCV. Cette fonction retourne une image de corrélation, qui montre les endroits où le template a le plus correspondu à l'image. Après normalisation, nous parcourons cette image pour récupérer le minimum (ou maximum suivant la méthode passée en paramètre à cvMatchTemplate), ce minimum/maximum est l'endroit de meilleur matching.
+Notre premier détecteur est le \texttt{MatchingDetector}, qui utilise l'algorithme de template matching.\\
 
-Pour éviter que deux templates trop proches détectent le même objet alors que deux objets sont valides, nous retirons la zone qui a matché le plus de l'image source.
+L'algorithme de template matching consiste à faire glisser un template sur la surface de l'image, et de calculer un coefficient de "corrélation" entre le template et la zone qu'il recouvre.\\
 
-Nous initialisons le détecteur avec une liste de templates que nous avons prédéfinis.
-Lors de la détection on parcourt la liste des templates, et on calcule le meilleur matching pour chacun de ces templates.
+Pour effectuer cette procédure, nous parcourons la liste des templates du détecteur. Pour chacun de ces templates, nous avons utilisé la fonction \texttt{cvMatchTemplate} d'OpenCV pour calculer une image de corrélation entre le template et l'image tirée de la vidéo, qui montre les endroits où le template a le plus correspondu à l'image. Après normalisation, nous parcourons cette image pour récupérer le minimum (ou maximum suivant la méthode passée en paramètre à \texttt{cvMatchTemplate}), ce minimum/maximum est l'endroit de meilleur matching. Nous stockons alors le quadruplet $(x,y,w,h)$ avec :
+\begin{description}
+\item[x,y] Les coordonnées du point de meilleur matching correspondant au coin supérieur gauche de la zone rectangulaire représentant l'objet détecté.
+\item[w,h] Les dimensions du template, correspondant aux dimensions de la zone rectangulaire représentant l'objet détecté.\\
+\end{description}
 
-Problème : la normalisation entraîne des faux positifs lorsque le template ne matche pas un des objets de l'image.
-Solution au problème : Arriver à calculer un indice de confiance du matching. Si cet indice de confiance ne dépasse pas un seuil à définir, ne pas prendre en compte le résultat du matching pour ce template.
-Améliorations permises par la solution : Possibilité de boucler sur un template jusqu'à ce qu'il ne matche plus. Permet d'avoir un template par type d'objet, et non un template/un résultat positif comme à présent.
+Une fois la position du meilleur matching récupérée, nous retirons de l'image source la zone rectangulaire décrite par le quadruplet $(x,y,w,h)$. Cette étape permet d'éviter que deux templates trop proches détectent le même objet alors que deux objets sont valides (exemple : Sur un dessin, deux bonhommes sont dessinés. Avec deux templates de bonhomme, il est possible que les deux matchings trouvent comme meilleur résultat le premier bonhomme et ne détectent pas le second. Notre étape de suppression permet de faire en sorte qu'une fois que le premier matching a détecté le premier bonhomme, celui-ci n'est plus pris en compte pour les détections des autres templates. On augmente ainsi les chances de détecter tous les objets de l'image.)\\
 
-SURF
+Une fois tous les templates parcourus, nous retournons l'ensemble des quadruplets $(x,y,w,h)$ correspondant aux détections.\\
+
+Un des défauts de notre \texttt{MatchingDetector} est que le retour de\\ \texttt{cvMatchTemplate} ne nous permet pas de calculer un seuil de confiance pour accepter ou rejeter le résultat du matching. On peut récupérer l'endroit où le template a le plus correspondu à l'image, mais on ne sait pas si il a matché à 99\% où à 10\%.\\
+
+Ce défaut, couplé à la normalisation du résultat de \texttt{cvMatchTemplate} (première tentative, infructueuse, de déterminer un seuil de confiance) entraîne un faux positif lorsque le template ne matche pas un des objets de l'image.\\ Le problème est double : pour le moment, nous avons un template = un résultat. On a donc forcément des faux positifs lorsque le nombre de templates d'un type d'objet dépasse le nombre d'objets de ce type du dessin, ou quand le template ne matche pas à un des objets du dessin. Nous avons également des faux négatifs, donc des objets qui ne sont pas détectés, lorsque le nombre de templates d'un type d'objet est inférieur au nombre d'objets de ce type dans le dessin.\\
+
+Une solution au problème serait d'arriver à calculer un indice de confiance du matching. Si cet indice de confiance ne dépasse pas un seuil à définir, on ne prend pas en compte le résultat du matching pour ce template.\\
+
+Cette solution permet de boucler sur un template jusqu'à ce que l'indice de confiance calculé ne passe plus le seuil. Cela permet d'avoir un template par type d'objet, et non un template = un résultat positif comme à présent. Avec peu de templates de bonhomme, on pourrait détecter un grand nombre de bonshommes dans le dessin. On réduirait ainsi le problème de faux négatifs lorsque le nombre de templates d'un type d'objet est inférieur au nombre d'objets de ce type. Et comme on ne prend pas en compte les matchings qui ne passent pas le seuil, on réduit également le nombre de faux positifs.\\
+
+
+\paragraph{SURF : Speeded Up Robust Features\\}
 L'algorithme SURF consiste à calculer des descripteurs sur les templates ainsi que sur l'image. Une fois ces descripteurs calculés, on en fait quelque chose.
 
 "SURF[11] : Speeded Up Robust Features" is a high-performance scale and rotation-invariant interest point detector / descriptor claimed to approximate or even outperform previously proposed schemes with respect to repeatability, distinctiveness, and robustness. SURF relies on integral images for image convolutions to reduce computation time, builds on the strengths of the leading existing detectors and descriptors (using a fast Hessian matrix-based measure for the detector and a distribution-based descriptor). It describes a distribution of Haar wavelet responses within the interest point neighbourhood. Integral images are used for speed and only 64 dimensions are used reducing the time for feature computation and matching. The indexing step is based on the sign of the Laplacian, which increases the matching speed and the robustness of the descriptor.

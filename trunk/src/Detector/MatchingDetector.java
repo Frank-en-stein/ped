@@ -26,8 +26,9 @@ public class MatchingDetector extends Detector{
 	}
 	
 	@Override
-	public LinkedList<CvScalar> Detect(IplImage scene) {
+	public LinkedList<CvScalar> Detect(IplImage src) {
 		LinkedList<CvScalar> rectangles = new LinkedList<CvScalar>();
+		IplImage scene = src.clone();
 		
 		for(int i=0 ; i<templates.size() ; i++){
 			CvSize size = new CvSize();
@@ -60,7 +61,20 @@ public class MatchingDetector extends Detector{
 				CvScalar rect = cvScalar(maxLoc.x(),maxLoc.y(), getTemplate(i).width(), getTemplate(i).height());
 				rectangles.add(rect);
 			}
-			System.out.println("Finding time = " + (System.currentTimeMillis() - start) + " ms");			
+			System.out.println("Finding time = " + (System.currentTimeMillis() - start) + " ms");	
+			
+			
+			/* This part can be used to avoid multiple detections on an object.
+			 * It removes the zone where the template matches the most.
+			 */
+			CvPoint p1 = new CvPoint();
+			CvPoint p2 = new CvPoint();
+			p1.x((int)(rectangles.get(i).getVal(0)));
+			p1.y((int)(rectangles.get(i).getVal(1)));
+			p2.x((int)(rectangles.get(i).getVal(0) + rectangles.get(i).getVal(2)));
+			p2.y((int)(rectangles.get(i).getVal(1) + rectangles.get(i).getVal(3)));
+			
+			cvRectangle(scene, p1, p2, cvScalar(0,0,0,0), CV_FILLED, 0, 0);
 		}
 		System.out.println("Prêt à afficher");
 		return rectangles;
