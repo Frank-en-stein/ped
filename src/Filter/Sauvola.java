@@ -26,13 +26,15 @@ public class Sauvola extends Filter {
 	@Override
 	public Boolean filter(IplImage src, IplImage dst) {
 
-		IplImage  sumimage, sqsumimage;
+		IplImage src1, sumimage, sqsumimage;
 		int width = src.width();
 		int height = src.height();
 
+		//src1 = IplImage.create(width, height, IPL_DEPTH_64F, 1);
 		sumimage = IplImage.create(width+1, height+1, IPL_DEPTH_64F, 1);
 		sqsumimage = IplImage.create(width+1, height+1, IPL_DEPTH_64F, 1);
 
+		//cvSplit(src, src1, null, null, null);
 		binarization(src, sumimage, sqsumimage, dst,false);
 
 		return true;
