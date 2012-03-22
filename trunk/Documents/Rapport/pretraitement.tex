@@ -1,9 +1,109 @@
-Lorem ipsum dolor sit amet, ea ius dico constituam. No graece impetus accumsan eum, eu mea sanctus inimicus omittantur, munere animal voluptaria in est. Duo ne inani ceteros officiis. Omnium aeterno similique per eu. No posse lucilius voluptatum qui, in officiis dissentias per. Mundi soluta habemus et est. Et duis eripuit quo.
+Prétraitement : 
+Nos images sont bruités  
 
-At quot discere mei. Sea at partem graeco aliquando. Eos id erant cetero, quaeque pericula similique ne mel, aeterno incorrupte necessitatibus ad vel. Vix ei forensibus expetendis. Pro id iisque consulatu repudiare, ea putent numquam phaedrum vis, vim no errem soleat ocurreret.
 
-An quando volutpat referrentur pro. Mnesarchum elaboraret sed ei. Per laudem similique id, vim odio liber ad, ius ne prima reque ocurreret. His ne magna sapientem.
+Filtre passe bas, flou gaussien ...   
+et 
+augmentation de contraste...
 
-Assum assentior no est. Discere propriae appetere at pri. An doctus concludaturque sit. Dissentias interesset pri ea, prompta partiendo expetenda et est. Ea brute repudiandae has, cu modus delenit detraxit sit, cetero volumus suscipit nam te. Movet phaedrum deterruisset id qui, tibique recusabo id quo. Te commune sensibus deterruisset sit.
+sont des outils que nous avons utilisé pendant le projet   
 
-Nam augue intellegam repudiandae id, nobis maiorum ullamcorper ius ad, ne his dicta tempor. Saepe assentior consectetuer sea ex. Scaevola expetendis comprehensam sed et. Salutandi dignissim cotidieque ne mea, ea tation graece ullamcorper qui, ex putant repudiare has. Ad idque debitis sit, vis at vivendo percipit pertinax, sea accusamus philosophia cu. Sea no diceret saperet, animal denique an his.
+
+étude du filtre de Weiner qui permet de flouter les zones homogéne et de réhausser les contrastes 
+
+
+Avant de commencer la détection de nouveautés ou de forme nous devons segmenter notre image afin de détecter les objets sur l'image.
+
+Etant donné le type de support, un document avec des symboles noirs sur fond blanc, nous avons focaliser notre travail sur la binarisation.
+
+La binarisation à pour but de ségmenter l'image en 2 classes, le fond et l'image.
+Il existe différentes techniques pour binariser une image.
+
+Nous avons dans un premier temps étudié la binarisation par seuillage global, on choisit la classe du pixel à partir d'un seuil.
+
+\begin{equation}
+	\forall i,j \in \mathbf{M*N} \quad I(i,j)=
+	\left\lbrace
+	\begin{array}{ccc}
+		1 &\mbox{si}& f(i,j) > S,\\
+		0 &\mbox{sinon}&
+	\end{array}\right.
+\end{equation}
+
+%%Avec : 
+%%\begin{description}
+%%  \item[ $N × M$] nombre de colonnes et de lignes de l’image ;
+%%  \item[$I$] image binarisée ;
+%%  \item[$S$] seuil de binarisation.
+%%  \item[$f$] valeur fonction de l’image d’origine ;\ldots
+%%  
+%\end{description}
+
+Le probléme est que l'on utilise des documents dégradés ( mauvaise ilumination et papier marqué) donc bien souvent il n'existe pas de seuil global.
+'''''''Cf image'''''''''' 
+
+
+Ensuite nous avons étudié la detection de contour car un dessin est une accumulation de trait.
+Nous avons donc appliqué le filtre de Sobel et Canny à nos images.
+
+Filtre de Sobel
+
+Filtre de canny 
+
+
+
+Les résultats étaient bien sur èfficace sur les traits fin mais moins bon dans les zones coloriées.
+Toutefois il est possible d'obtenir, en y combinant des filtres morphologiques, les zones dans lesquelles il y a un objet.
+
+
+
+L'étude de ,qui compare les différents algorithmes de binarisation emet un classement des meilleurs algorithmes pour les images dégradés.
+La methode de kittler se basant sur le clustering ... nous avons abandonné cette méthode car les résultats obtenus étaient insuffisants.
+
+et les méthodes par seuillage local, son principe est d’utiliser une étude localisée autour du pixel pour déterminer quel seuil utiliser. Pour réaliser cette étude locale, les techniques utilisent une fenêtre d’étude centrée sur le pixel à étudier. Cette fenêtre peut avoir différentes tailles, de nombreuses méthodes on été proposé bernsten, Niblack , Sauvola.
+
+Sauvola est indiqué comme obtenant les meilleurs résultats
+
+\begin{equation}
+	S(i,j) = \mu(i,j) + \kappa.((\sigma(i,j)/R)-1))
+\end{equation}
+
+Avec :
+- S(i, j) : seuil à appliquer pour le point i, j ;\\
+- $\sigma(i, j)$ : valeur de l’écart type dans une fenêtre centré en i, j de taille $N * M$ ;\\
+- $\mu(i, j)$ : valeur moyenne des niveaux de gris dans la même fenêtre ;\\
+- $\kappa$ : constante fixée le plus généralement à 0, 2 ;\\
+- R : constante permettant d'ajuster la dynamique de l'ecart type, géneralement 128.
+- N et M appartenant à N.\\
+
+La méthode de Sauvola calcule le seuil de binarisation en fonction de la moyenne et de l'ectart type des pixels ajuster par la constante R , le raport entre les deux est défini par la constante $\kappa$.
+Sauvola conseille un $\kappa \in \left[ 0.2 ;0.5 \right[$, mais ce type de paramétre est fixé pour binariser des textes, or nos documents sont des dessins effectué au crayons a papier et peuvent avoir des trait trés fins.
+dans son article  , fixe $\kappa$ à 0.05, ce qui augmente l'influence de l'ecart type et permet d'obtenir de meilleurs résultats, notament lorsqu'il y a un faible contraste comme dans notre cas.   
+
+La taille de la fenêtre est fixé en fonction de la taille de l'image, nous ne prenons pas la même taille de fenetre pour l'image en haute résolution que pour le flux vidéo en basse résolution.
+
+Optimisation.
+
+Les images integrales sont une représentation sous la forme d'une image, de même taille que l'image d'origine, qui en chacun de ses points contient la somme des pixels situés au dessus et à gauche de ce point. Plus formellement, l'image intégrale ii est définie à partir de l'image i par : 
+
+\begin{equation}
+	%ii(x,y) = \sum \liminf{\underset{x' \leq x}{y' \leq y }} i(x',y')
+	ii(x,y) = \sum_{x' \leq x  \atop y' \leq y } i(x',y')
+\end{equation}
+
+
+
+
+
+
+
+résumé des differentes techniques 
+
+
+Seuillage global
+
+detection de contour + filtre morphologique 
+     
+Seuillage local Opencv moyenne et gaussian
+
+seuillage locale Sauvola

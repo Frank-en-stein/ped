@@ -88,7 +88,7 @@ public class ComputeThread extends Thread {
 		//detection
 		LinkedList<CvScalar> resultats = detector.Detect(resGray);
 
-		for(int i=0 ; i<resultats.size() ; i++){
+		/*for(int i=0 ; i<resultats.size() ; i++){
 			CvPoint p1 = new CvPoint();
 			CvPoint p2 = new CvPoint();
 			p1.x((int)(resultats.get(i).getVal(0)));
@@ -98,11 +98,12 @@ public class ComputeThread extends Thread {
 			
 			cvRectangle(iplimg, p1, p2, cvScalar(1,0,0,0), 2, 0, 0);
 			cvRectangle(resGray, p1, p2, cvScalar(1,0,0,0), 2, 0, 0);
-		}
+		}*/
 				
 		// End process
-		this.dst = Utils.toPImage(iplimg);
-		//this.dst = Utils.toPImage(resGray);
+		//this.dst = Utils.toPImage(iplimg);
+		this.dst = Utils.toPImage(resGray);
+		dst.save("capImageSize-"+ Sauvola.size +".png");
 	}
 
 }

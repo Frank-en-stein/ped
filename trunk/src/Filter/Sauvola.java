@@ -19,7 +19,7 @@ public class Sauvola extends Filter {
 	public static int size;
 
 	public Sauvola() {
-		size = 51;
+		size = 21;
 	}
 
 
