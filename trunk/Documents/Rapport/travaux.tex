@@ -1,8 +1,24 @@
 \subsection{Architecture logicielle}
 
+L'architecture de notre bibliothèque se constitue des deux package que sont \texttt{Detector} et \texttt{Filter}.
+
+Le package \texttt{Detector} contient l'interface des méthodes de détection et reconnaissance de forme ainsi que leurs implémentation.
+Le package \texttt{Filter} contient les filtres pour le prétraitement ainsi que la détection de nouveauté.
+
+
 \begin{center}
-\includegraphics[scale=0.66]{Archi/Architecture.png}
+\includegraphics[width=\textwidth]{Archi/Architecture.png}
 \end{center}
+
+\paragraph{Package \texttt{Filter}\\}
+Le prétraitement des images réside essentiellement en l'application de filtres. Afin de simplifier ces application nous avons défini une interface commune à tous les filtres. 
+
+Dans le but d'unifier le comportement des filtres nous utiliserons le patron de conception "patron de méthode" qui permet de définir la méthode \texttt{apply} qui permet d'appliquer le filtre sur l'image. 
+L'interface des filtre devient donc une classe abstraire dans laquelle, seul la méthode \texttt{filter} reste à implémenter, elle contiendra le traitement réel du filtre.
+
+On peut remarquer que certain filtres, comme la conversion d'une image couleur en image niveau de gris, n'ont pas de paramètre particulier et de ce fait une seule instance doit être créer, les autre ne faisant que consommer inutilement la mémoire. L'utilisation du patron de conception "singleton" semble utile.
+
+Toujours dans le but d'unifier l'utilisation des filtres, nous avons mis en place une fabrique de filtre, qui permet également d'assurer l'unicité de certains de ceux-ci.
 
 \subsection{Pré-traitement} %penser à retoucher les sections.
 \input{pretraitement.tex}
