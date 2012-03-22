@@ -1,17 +1,29 @@
 \subsubsection{Reconnaissance de formes dessinées}
 
-Afin de reconnaître des formes simples dans une vidéo, nous avons mis en place un système de détecteur.\\
+Un des objectifs de notre projet était de détecter des formes simples dans une vidéo. Ci-dessous sont présentés deux exemples de formes simples.\\
+
+\begin{center}
+\includegraphics[scale=1]{images/templates.png}
+\captionof{figure}{\\Exemples de templates}
+\end{center}
+
+Afin de reconnaître ces pictogrammes dans la vidéo, nous avons mis en place un système de détecteur.\\
 
 Nous avons implémenté deux détecteurs différents. Le premier s'appuie sur du template matching pour reconnaître une forme. Le second utilise les descripteurs SURF.\\
 
 Pour faire ainsi, nous avons mis en place une classe abstraite \texttt{Detector} qui présente les fonctions de base d'un détecteur, à savoir ajouter, récupérer ou supprimer un template, et définit la fonction permettant de lancer la détection.
-Chacun de nos détecteurs (\texttt{MatchingDetector et SurfDetector} doit donc implémenter cette fonction de détection.
+Chacun de nos détecteurs (\texttt{MatchingDetector} et \texttt{SurfDetector}) doit donc implémenter cette fonction de détection.
 
 \paragraph{Template matching\vspace{0.5cm}\\}
 
 Notre premier détecteur est le \texttt{MatchingDetector}, qui utilise l'algorithme de template matching.\\
 
-L'algorithme de template matching consiste à faire glisser un template sur la surface de l'image, et de calculer un coefficient de "corrélation" entre le template et la zone qu'il recouvre.\\
+L'algorithme de template matching consiste à faire glisser un template sur la surface de l'image, et de calculer un score de "corrélation" entre le template et la zone qu'il recouvre.\\
+
+\begin{center}
+\includegraphics[width=\textwidth]{images/templateMatching.png}
+\captionof{figure}{Principe du Template Matching}
+\end{center}
 
 Pour effectuer cette procédure, nous parcourons la liste des templates du détecteur. Pour chacun de ces templates, nous avons utilisé la fonction \texttt{cvMatchTemplate} d'OpenCV pour calculer une image de corrélation entre le template et l'image tirée de la vidéo, qui montre les endroits où le template a le plus correspondu à l'image. Après normalisation, nous parcourons cette image pour récupérer le minimum (ou maximum suivant la méthode passée en paramètre à \texttt{cvMatchTemplate}), ce minimum/maximum est l'endroit de meilleur matching. Nous stockons alors le quadruplet $(x,y,w,h)$ avec :
 \begin{description}
@@ -33,7 +45,22 @@ Cette solution permet de boucler sur un template jusqu'à ce que l'indice de con
 
 
 \paragraph{SURF : Speeded Up Robust Features\\}
-L'algorithme SURF consiste à calculer des descripteurs sur les templates ainsi que sur l'image. Une fois ces descripteurs calculés, on en fait quelque chose.
 
-"SURF[11] : Speeded Up Robust Features" is a high-performance scale and rotation-invariant interest point detector / descriptor claimed to approximate or even outperform previously proposed schemes with respect to repeatability, distinctiveness, and robustness. SURF relies on integral images for image convolutions to reduce computation time, builds on the strengths of the leading existing detectors and descriptors (using a fast Hessian matrix-based measure for the detector and a distribution-based descriptor). It describes a distribution of Haar wavelet responses within the interest point neighbourhood. Integral images are used for speed and only 64 dimensions are used reducing the time for feature computation and matching. The indexing step is based on the sign of the Laplacian, which increases the matching speed and the robustness of the descriptor.
+Le second type de détecteur que nous avons implémenté se base sur les descripteurs SURF.\\
 
+L'algorithme SURF permet de déterminer des points d'intérêt dans une image, ainsi que de détecter ces points dans une autre image. L'intérêt de SURF est qu'il n'est ni sensible à la rotation ni à la mise à l'échelle.\\
+
+Dans OpenCV, SURF est implémenté par la classe \texttt{ObjectFinder}, notre \texttt{SurfDetector} utilise donc cette classe pour détecter les objets.\\
+
+Dans un premier temps, le détecteur est initialisé avec la liste des templates que nous voulons détecter, c'est à cette étape que les descripteurs des templates sont calculés. Ce sont ces descripteurs qui sont utilisés, et comparés à ceux trouvés dans l'image pour déterminer si un objet est présent dans l'image.\\
+
+La fonction qui fait cette détection est \texttt{find} de la classe \texttt{ObjectFinder}. Cette fonction calcule la liste des descripteurs contenus dans l'image, et compare ensuite ces descripteurs à ceux trouvés dans les templates. Si un objet est détecté, elle retourne ensuite un ensemble de points qui correspondent aux coins du polygone englobant l'objet détecté. À partir de ces points, nous calculons le quadruplet $(x,y,w,h)$ présenté dans la partie précédente pour garder une cohérence entre les retours des différents détecteurs.\\
+
+Le principal problème que nous avons rencontré avec ce détecteur utilisant SURF, est que la vidéo est de mauvaise qualité. Les templates que nous utilisons étant tirés de la vidéo, l'algorithme de calcul de descripteurs ne retourne que très peu de résultats, pas suffisamment pour pouvoir détecter un objet. Après test sur des images en haute qualité, nous avons pu vérifier que le détecteur repère bien des objets qui ont subi une rotation, ou qui ont changé d'échelle.\\
+
+\begin{center}
+\includegraphics[width=\textwidth]{images/findobj.png}
+\captionof{figure}{Exemple de SURF}
+\end{center}
+
+Sur la figure ci-dessus, nous pouvons voir différentes étapes de l'algorithme SURF. La partie gauche présente la correspondance entre les descripteurs du modèle de boite, et la scène contenant la boite parmi divers objets. La partie droite de la figure présente elle deux choses : elle présente en haut les marqueurs trouvés sur la boite, et en bas montre le résultat de la détection.\\
