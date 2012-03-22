@@ -1,15 +1,10 @@
 package samples.featureExtractor;
 
-import static com.googlecode.javacv.cpp.opencv_highgui.*;
 import static com.googlecode.javacv.cpp.opencv_imgproc.*;
 import static com.googlecode.javacv.cpp.opencv_core.*;
 
-import javax.rmi.CORBA.Util;
-
-import Filter.NoveltyMask;
 import Filter.Sauvola;
 
-import com.googlecode.javacv.cpp.opencv_core.CvArr;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
 import com.googlecode.javacv.processing.Utils;
 

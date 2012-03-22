@@ -2,7 +2,6 @@ package Filter;
 
 
 import static com.googlecode.javacv.cpp.opencv_core.IplImage;
-import static com.googlecode.javacv.cpp.opencv_core.*;
 
 public abstract class Filter {
 	/**
