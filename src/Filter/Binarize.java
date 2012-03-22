@@ -4,13 +4,10 @@ import static com.googlecode.javacv.cpp.opencv_core.IPL_DEPTH_8U;
 
 import static com.googlecode.javacv.cpp.opencv_core.cvAdd;
 import static com.googlecode.javacv.cpp.opencv_core.cvCreateImage;
-import static com.googlecode.javacv.cpp.opencv_core.cvGetSize;
 import static com.googlecode.javacv.cpp.opencv_core.cvSplit;
-import static com.googlecode.javacv.cpp.opencv_highgui.cvConvertImage;
 import static com.googlecode.javacv.cpp.opencv_imgproc.CV_ADAPTIVE_THRESH_GAUSSIAN_C;
 import static com.googlecode.javacv.cpp.opencv_imgproc.CV_MOP_DILATE;
 import static com.googlecode.javacv.cpp.opencv_imgproc.CV_MOP_ERODE;
-import static com.googlecode.javacv.cpp.opencv_imgproc.CV_RGB2BGR;
 import static com.googlecode.javacv.cpp.opencv_imgproc.CV_SHAPE_ELLIPSE;
 import static com.googlecode.javacv.cpp.opencv_imgproc.CV_THRESH_BINARY;
 import static com.googlecode.javacv.cpp.opencv_imgproc.cvAdaptiveThreshold;
