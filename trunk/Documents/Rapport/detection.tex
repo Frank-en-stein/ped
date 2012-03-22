@@ -14,7 +14,7 @@ Nous avons implémenté deux détecteurs différents. Le premier s'appuie sur du
 Pour faire ainsi, nous avons mis en place une classe abstraite \texttt{Detector} qui présente les fonctions de base d'un détecteur, à savoir ajouter, récupérer ou supprimer un template, et définit la fonction permettant de lancer la détection.
 Chacun de nos détecteurs (\texttt{MatchingDetector} et \texttt{SurfDetector}) doit donc implémenter cette fonction de détection.
 
-\paragraph{Template matching\vspace{0.5cm}\\}
+\paragraph{Template matching \cite{Matching1} \cite{Matching2}\vspace{0.5cm}\\}
 
 Notre premier détecteur est le \texttt{MatchingDetector}, qui utilise l'algorithme de template matching.\\
 
@@ -44,7 +44,7 @@ Une solution au problème serait d'arriver à calculer un indice de confiance du
 Cette solution permet de boucler sur un template jusqu'à ce que l'indice de confiance calculé ne passe plus le seuil. Cela permet d'avoir un template par type d'objet, et non un template = un résultat positif comme à présent. Avec peu de templates de bonhomme, on pourrait détecter un grand nombre de bonshommes dans le dessin. On réduirait ainsi le problème de faux négatifs lorsque le nombre de templates d'un type d'objet est inférieur au nombre d'objets de ce type. Et comme on ne prend pas en compte les matchings qui ne passent pas le seuil, on réduit également le nombre de faux positifs.\\
 
 
-\paragraph{SURF : Speeded Up Robust Features\\}
+\paragraph{SURF : Speeded Up Robust Features \cite{SURF}\vspace{0.5cm}\\}
 
 Le second type de détecteur que nous avons implémenté se base sur les descripteurs SURF.\\
 
