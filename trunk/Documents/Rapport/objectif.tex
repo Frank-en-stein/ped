@@ -22,22 +22,22 @@ La bibliothèque devra permettre d'appliquer aisément un certain nombre de filt
 
 La bibliothèque devra permettre de developper de nouveau filtres. Tous les filtres devrons pouvoir être utilisés de la même manière afin d'en simplifier l'usage, ils devrons avoir une interface commune.
 
-
+\clearpage
 \subsubsection{Détection des évolutions d'un dessin}
 
 La première fonctionnalité de la bibliothèque est de permettre la récupération de plus haute qualité possible d’un dessin à différents moments. Les moments de prise de vue du dessin seront considérés comme idéaux, pas de mains, ni d'objets dans le champs de prise de vue.
 
 On cherche ici à permettre le développement d'applications permettant d'observer les moments clés de la création d'un dessin sans perturber le travail de l'artiste, c'est à dire, éviter de scanner la feuille.
 
-\paragraph{Performance\\}
+\paragraph{Performance\protect\footnotemark[1]\\}
 La bibliothèque devra permettre l'analyse d'image à une cadence de 2 à 3 images par seconde. Le but ici n'est pas la performance mais bien la qualité de l'analyse.
 Les images à traiter seront aquises en haute definition, un minimum de 1080 lignes de 1920 pixels, ce qui correspond à la resolution d'un flux vidéo HDTV 1080p.
 
 
-\subsubsection{Reconnaissance des formes dessinées\\}
+\subsubsection{Reconnaissance des formes dessinées}
 La deuxième fonctionalité de la bibliothèque est de reconnaitre, dans un flux video, des dessins ou pictogrammes préenregistrés. 
 
-Différentes méthodes pourrons être développées selon que les formes à reconnaitre dans l'image sont simples (p.ex. : un carré, un cercle) ou complexe(p.ex. : un visage).
+Différentes méthodes pourrons être développées selon que les formes à reconnaitre dans l'image sont simples (p.ex. : un carré, un cercle) ou complexe (p.ex. : un visage).
 
 On utilisera par exemple :
 
@@ -46,18 +46,34 @@ On utilisera par exemple :
 \item Feature detection : Utilisation de caractéristique invariante dans l'image pour la reconnaisance de formes complexe (par exemple: descripteur SURF).
 \end{itemize}
 
-\paragraph{Performance\\}
+\paragraph{Performance\protect\footnotemark[1]\\}
 La bibliothèque devra permettre l'analyse d'image à une cadence de 30 à 60 images par seconde. Le but ici est d'effectuer de l'analyse sur un flux vidéo temps réel, de basse qualité.
 Les images à traiter seront aquises en basse qulaité, on prendra comme base des vidéos au format vidéo VGA 480 lignes de 640 pixels, ce qui correspond au format VGA.
 
+\footnotetext[1]{Les problématiques de performance sont secondaires, l'objectif principal est de developper une bibliothèque qui fonctionne.}
 
-PERFOMANCE NON CRITIQUE
+\clearpage
 \subsection{Planning}
+Le projet s'est déroulé suivant un planning se découpant en deux phases principales : une phase de préparation et d'organisation du projet et une phase de développement, de tests et de fin de projet.\\
+
+La phase de préparation et d'organisation, présentée dans le diagramme de Gantt ci-après, est divisée en deux tâches :
+ \begin{itemize}
+ \item \'Etablissement du cahier des charges par l'ensemble du groupe
+ \item \'Etude de l'existant. Cette dernière étant subdivisée en deux sous-tâches : 
+	 \begin{itemize}
+		\item \'Etude des methodes de prétraitements d'image, réalisé par Fabien Ridel et Jun Wen;
+		\item \'Etude des méthodes d'extraction de nouveautés et de de reconnaissance de forme dans l'image, réalisé par Tomy Manson et Nicolas Mestreau.
+	\end{itemize}
+\end{itemize} 
 
 \begin{center}
 \includegraphics[width=\textwidth]{gantt1.png}
 \captionof{figure}{Planning taches préparatoire}
 \end{center}
+
+\clearpage
+La phase suivante, présentée dans le diagramme de Gantt ci-après, est la phase de développement de la bibliothèque, de programme de démonstration et de tests. Nous incluons dans cette phase la rédaction du rapport et la préparation de la présentation, qui constituent la fin de projet.
+
 \begin{center}
 \includegraphics[width=\textwidth]{gantt2.png}
 \captionof{figure}{Planning de dévelopement et de fin de projet}
