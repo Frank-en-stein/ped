@@ -14,13 +14,13 @@ Tout traitement sur une image nécessite d'effectuer un certain nombre de pré-t
 La bibliothèque devra permettre d'appliquer aisément un certain nombre de filtres, notamment :
 
 \begin{description}
-\item[Filtre morphologique] Optimisation des methode de template matching;
+\item[Filtre morphologique] Optimisation des méthodes de template matching;
 \item[Binarisation] Permettre de trouver les différences qui existent entre deux images;
 \item[Correction de couleur] Balance des blancs, permet d'annuler la coloration globale de l'image, dépendante de l'éclairage de la scène (lumière du jour, lumière artificielle, etc ...);
 \item[Filtrage par couleur] Récupérer uniquement les formes dessinées avec une couleur précise.
 \end{description}
 
-La bibliothèque devra permettre de developper de nouveau filtres. Tous les filtres devrons pouvoir être utilisés de la même manière afin d'en simplifier l'usage, ils devrons avoir une interface commune.
+La bibliothèque devra permettre de développer de nouveaux filtres. Tous les filtres devront pouvoir être utilisés de la même manière afin d'en simplifier l'usage, ils devront avoir une interface commune.
 
 \clearpage
 \subsubsection{Détection des évolutions d'un dessin}
@@ -31,26 +31,26 @@ On cherche ici à permettre le développement d'applications permettant d'observ
 
 \paragraph{Performance\protect\footnotemark[1]\\}
 La bibliothèque devra permettre l'analyse d'image à une cadence de 2 à 3 images par seconde. Le but ici n'est pas la performance mais bien la qualité de l'analyse.
-Les images à traiter seront aquises en haute definition, un minimum de 1080 lignes de 1920 pixels, ce qui correspond à la resolution d'un flux vidéo HDTV 1080p.
+Les images à traiter seront acquises en haute définition, un minimum de 1080 lignes de 1920 pixels, ce qui correspond à la résolution d'un flux vidéo HDTV 1080p.
 
 
 \subsubsection{Reconnaissance des formes dessinées}
-La deuxième fonctionalité de la bibliothèque est de reconnaitre, dans un flux video, des dessins ou pictogrammes préenregistrés. 
+La deuxième fonctionnalité de la bibliothèque est de reconnaître, dans un flux vidéo, des dessins ou pictogrammes pré-enregistrés. 
 
-Différentes méthodes pourrons être développées selon que les formes à reconnaitre dans l'image sont simples (p.ex. : un carré, un cercle) ou complexe (p.ex. : un visage).
+Différentes méthodes pourront être développées selon que les formes à reconnaître dans l'image sont simples (e.g. : un carré, un cercle) ou complexe (e.g. : un visage).
 
 On utilisera par exemple :
 
 \begin{itemize}
-\item Template Matching : Mise en correspondance d'une image avec une image de référence pour la detection de formes simple.
-\item Feature detection : Utilisation de caractéristique invariante dans l'image pour la reconnaisance de formes complexe (par exemple: descripteur SURF).
+\item Template Matching : Mise en correspondance d'une image avec une image de référence pour la détection de formes simples.
+\item Feature detection : Utilisation de caractéristiques invariantes dans l'image pour la reconnaissance de formes complexes (e.g. : descripteurs SURF).
 \end{itemize}
 
 \paragraph{Performance\protect\footnotemark[1]\\}
 La bibliothèque devra permettre l'analyse d'image à une cadence de 30 à 60 images par seconde. Le but ici est d'effectuer de l'analyse sur un flux vidéo temps réel, de basse qualité.
-Les images à traiter seront aquises en basse qulaité, on prendra comme base des vidéos au format vidéo VGA 480 lignes de 640 pixels, ce qui correspond au format VGA.
+Les images à traiter seront acquises en basse qualité, on prendra comme base des vidéos de résolution 480 lignes de 640 pixels, ce qui correspond au format VGA.
 
-\footnotetext[1]{Les problématiques de performance sont secondaires, l'objectif principal est de developper une bibliothèque qui fonctionne.}
+\footnotetext[1]{Les problématiques de performance sont secondaires, l'objectif principal est de développer une bibliothèque qui fonctionne.}
 
 \clearpage
 \subsection{Planning}
