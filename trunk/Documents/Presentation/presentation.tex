@@ -30,7 +30,7 @@
 
 \frame{\titlepage}
 
-%% part 1
+%% part 1 - Jun
 \section[Presentation]{Presentation}
 \AtBeginSection[]{
 \begin{frame}{Table of contents}
@@ -45,80 +45,10 @@ Un sujet proposé par Jérémy Laviole.
 \end{center}
 \end {frame}
 
-\begin{frame}{Context}
+%% part 2 - Fabien
+\section[Pré-traitement]{Pretraitement}
 \vspace{5mm}
-\begin{itemize}[<+->]
-\item Video = enormous amount of data
-\item Some data are more useful than the others
-\item Extraction of the prominent data
-\item Goal: reduce the amount of data
-\end{itemize}
-\end{frame}
-
-\section[Papers summary]{Papers summary}
-\begin{frame}{Saliency}
-\vspace{5mm}
-\begin{center}
-Weighted-mse based on saliency map for assessing video quality of h.264 video streams.\\
-\vspace{5mm}
-O.Hadar, T.Ahmed, H.Boujut, J.Benois-Pineau and P.Bonnet.
-\end{center}
-\end{frame}
-
-\begin{frame}{Saliency}
-\vspace{5mm}
-\textit{The salience of an item is the state or quality by which it stands out relative to its neighbours.}
-\vspace{5mm}
-%\begin{center}
-%\includegraphics[scale=0.15]{kayak.jpg} \hspace{5mm}
-%\includegraphics[scale=0.16]{final.jpg}
-%\end{center}
-\end{frame}
-
-\begin{frame}{Saliency}
-\vspace{5mm}
-\textit{The salience of an item is the state or quality by which it stands out relative to its neighbours.}
-\vspace{5mm}
-\begin{itemize}[<+->]
-\item Spatial saliency map
-\item Temporal saliency map
-\item Saliency map fusion
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Tracking}
-\vspace{5mm}
-\begin{center}
-A multi-object particle filter tracking with a dual consistency check: Application to mid-level concept detection in videos. \\
-\vspace{5mm}
-J.Benois-Pineau, Y.Zhou, B.Mansencal.
-\end{center}
-\end{frame}
-
-\begin{frame}{Tracking}
-\vspace{5mm}
-\textit{Video tracking is the process of locating a moving object (or multiple objects) over time using a camera.}
-\begin{itemize}[<+->]
-\item Detection Stage
-\item Tracking Stage
-\begin{itemize}
-	\item Kolmogrov-Smirnov test
-\end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Tools}
-\vspace{5mm}
-\begin{itemize}[<+->]
-\item Based on the articles
-\item Method to extract Saliency map from video
-\item Software to track objects in the video
-\end{itemize}
-\end{frame}
-
-\section[Goals]{Goals}
-\vspace{5mm}
-\begin{frame}{Goals}
+\begin{frame}{Filtres}
 \vspace{5mm}
 \begin{itemize}[<+->]
 \item Adaptation Tracker to Saliency descriptors (Saliency maps)
@@ -126,158 +56,71 @@ J.Benois-Pineau, Y.Zhou, B.Mansencal.
 \end{itemize}
 \end{frame}
 
-%% part 2
-\section[Work Done]{Work done}
-\begin{frame}{Work Done}
+%% part 3 - Nicolas
+\section[Détection de Pictogrammes]{Template Detector}
+\begin{frame}{Objectif}
 \vspace{5mm}
-\begin{itemize}[<+->]
-\item Tracker adaptation
-\item Player: first version
-\item Computation pipeline
-\item GUI
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Tracker adaptation}
-\vspace*{5mm}
-\begin{itemize}[<+->]
-\item Goal: adapt the tracking to Saliency maps
-\end{itemize}
-\begin{enumerate}[<+->]
-\item Tracker needs 3 channels
-\item Saliency maps: 1 channel
-\item Optimization of the computing time
-\end{enumerate}
-\end{frame}
-
-\begin{frame}{First player}
-\vspace*{5mm}
-%\begin{center}
-%\includegraphics[scale=0.25]{spacial.jpg}
-%\end{center}
-\end{frame}
-
-\begin{frame}{Software}
-\vspace*{5mm}
+\begin{itemize}
+\item Développer un logiciel qui détecte des pictogrammes dans un flux vidéo.
+\item Utilisation de templates représentant les pictogrammes.
+\vspace{5mm}
 \begin{center}
-Put together several tools:
+\includegraphics[scale=0.66]{images/templates.png}
 \end{center}
-\begin{enumerate}
-\item Decoder
-\item Saliency map computer
-\item Tracker
-\item Player
-\end{enumerate}
-\end{frame}
-
-\begin{frame}{Execution pipeline}
-\vspace*{5mm}
-	\begin{itemize}
-	\item Goal: reduce computing time
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Execution pipeline}
-\vspace*{5mm}
-	\begin{itemize}
-	\item Goal: reduce computing time
-	\end{itemize}
-%\begin{center}
-%\includegraphics[scale=0.16]{pipelines.png}
-%\end{center}
-\end{frame}
-
-\begin{frame}{Buffers}
-\vspace*{5mm}
-\begin{itemize}
-\item Goal: transfer data between threads 
-\end{itemize}
-%\vspace{5mm}
-%\begin{center}
-%\includegraphics[scale=0.30]{buffers.png}
-%\end{center}
-\end{frame}
-
-\begin{frame}{Buffers}
-\vspace*{1cm}
-\texttt{CommonType} contains:
-\begin{itemize}
-\item the FFFMPEGFrame
-\item the Saliency Maps
-\item the Bounding Boxes
-\item an Image for visualisation
 \end{itemize}
 \end{frame}
 
-\begin{frame}{GUI}
+\begin{frame}{Méthode utilisée}
 \vspace{5mm}
 \begin{itemize}
-\item Goal: display the results of saliency tracking
+\item Template Matching
+\item Principe : 
+\begin{center}
+\includegraphics[scale=0.66]{images/templateMatching.png}
+\end{center}
 \end{itemize}
-\vspace{2mm}
-%\begin{center}
-%\includegraphics[scale=0.25]{ihm.jpg}
-%\end{center}
 \end{frame}
 			
-%% part3
-\section[Difficulties]{Difficulties}
+\begin{frame}{Problème rencontré}
+\vspace{5mm}
+\begin{itemize}
+\item \texttt{cvMatchTemplate} -> Carte de corrélation
+\item Récupération du meilleur résultat
+\item Difficulté pour déterminer un seuil d'acceptation
+\end{itemize}
+\end{frame}	
+
+\begin{frame}{Résultats obtenus}
+\vspace{5mm}
+\begin{center}
+\includegraphics[width=\textwidth]{images/capture1.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Résultats obtenus}
+\vspace{5mm}
+\begin{center}
+\includegraphics[width=\textwidth]{images/capture2.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Méthode alternative}
+\vspace{5mm}
+\begin{itemize}
+\item SURF
+\item Intérêt : Non affecté par rotation et mise à l'échelle 
+\item Problème : Qualité vidéo trop basse -> Trop peu de marqueurs détectés
+\end{itemize}
+\end{frame}
+	
+%% part 4 - Tomy
+\section[Extraction de nouveautés]{Feature Extractor}
 	\begin{frame}{Difficulties}
 		\vspace*{5mm}
 	\begin{itemize}
 	\item Libraries installation
 	\item Memory management
 	\item Visualisation
-	\end{itemize}
-	\end{frame}
-
-	\begin{frame}{Libraries}
-	\vspace*{5mm}
-	\begin{itemize}[<+->]
-		\item Local installation
-		\item Dependences with other libraries
-		\item Recurring problem
-	\end{itemize}	
-	\end{frame}
-	
-	\begin{frame}{Memory leak}
-	\vspace*{5mm}
-	\begin{itemize}[<+->]
-		\item Software freeze
-		\item Memory swapping
-	\end{itemize}
-	\end{frame}
-	
-	\begin{frame}{Memory leak origin}
-	\vspace*{5mm}
-	\begin{itemize}[<+->]
-		\item Buffer = \texttt{list}
-		\item push\_back() $\Rightarrow$ object copied
-		\item pop\_front() $\Rightarrow$ object deleted
-		\item Saliency Maps deleter causes problems 
-		\item Memory management impossible
-	\end{itemize}
-	\end{frame}
-	
-	\begin{frame}{Solution}
-	\vspace*{5mm}
-	\begin{itemize}[<+->]
-		\item Only one circular buffer
-		\item Fixed size array of \texttt{CommonType}
-		\item Decoding Stage $\Rightarrow$ new \texttt{CommonType}
-		\item \texttt{CommonType} updates
-		\item After visualisation $\Rightarrow$ delete \texttt{CommonType} 
-		\item No more copies
-	\end{itemize}
-	\end{frame}
-	
-	\begin{frame}{Visualisation}
-	\vspace*{5mm}
-	\begin{itemize}[<+->]
-		\item Data deletion
-		\item Video frame rate
-		\item Variable presentation time
-		\item Approximation of frame rate
 	\end{itemize}
 	\end{frame}
 	
