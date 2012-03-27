@@ -115,22 +115,107 @@ Un sujet proposé par Jérémy Laviole.
 	
 %% part 4 - Tomy
 \section[Extraction de nouveautés]{Feature Extractor}
-	\begin{frame}{Difficulties}
-		\vspace*{5mm}
+\begin{frame}{Objectif}
+\vspace{5mm}
+\begin{itemize}
+\item Développer un logiciel qui permet de voir l'évolution d'un dessin.
+\vspace{5mm}
+\begin{center}
+\includegraphics[scale=0.5]{images/evo/evo.png}
+\end{center}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Tâtonnement}
+\begin{block}{}
+Dans un premier temps nous avons fait une simple différences d'images.
+\end{block}
+\begin{center}
+\includegraphics[width=\textwidth]{images/evo/diff.png}
+\end{center} 
+\end{frame}
+
+\begin{frame}{Tâtonnement}
+\begin{block}{}
+Dans un premier temps nous avons fait une simple différences d'images.
+\end{block}
+\vspace{5mm}
+\begin{itemize}
+\item Problème : Impossible d'extraire les nouveautés
+\item Solution : \'Etape de pré-traitement
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Pré-traitement}
+\vspace{5mm}
+\begin{block}{}
+Les images que nous avons présentent des défauts.
+\end{block}
+
+\begin{itemize}
+\item Coloration : 
 	\begin{itemize}
-	\item Libraries installation
-	\item Memory management
-	\item Visualisation
+	\item Le dessin est un processus long
+	\item Rend l'analyse plus difficile
+	\item Nécessité d'une balance des blancs
 	\end{itemize}
-	\end{frame}
+\item Haute qualité :
+	\begin{itemize}
+	\item Rend l'analyse plus facile
+	\item Augmente le temps d'analyse
+	\item Algorithme efficace nécessaire
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Méthode utilisée}
+\vspace{5mm}
+\begin{block}{}
+\textbf{Idée :} extraction d'un masque de nouveautés
+\end{block}
+\begin{itemize}
+\item Binarisation des images
+\item Différence des images obtenues
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Résultats obtenus}
+\vspace{5mm}
+\begin{center}
+\includegraphics[width=\textwidth]{images/evo/masque.png}
+\end{center}
+\end{frame}
+
+
+\begin{frame}{Résultats obtenus}
+\vspace{5mm}
+\begin{center}
+\includegraphics[width=\textwidth]{images/evo/evo.png}
+\end{center}
+\end{frame}
+\begin{frame}{Résultats obtenus}
+\vspace{5mm}
+\begin{center}
+\includegraphics[width=\textwidth]{images/evo/evomasque.png}
+\end{center}
+\end{frame}
+			
+\begin{frame}{Problème rencontré}
+\vspace{5mm}
+\begin{block}{}
+Il est difficile de supprimer totalement le bruit sur le masque
+\end{block}
+\begin{itemize}
+\item Différence de recalage
+\item Le dessinateur redessine par dessus
+\end{itemize}
+\end{frame}	
+
 	
 \section[Conclusion]{Conclusion}
 	\begin{frame}{Conclusion}
 		\vspace*{5mm}
 		\begin{itemize}
-		\item Software partially working
-		\item A bad choice of buffer implementation
-		\item Tests not done due to a lack of time
 		\end{itemize}
 	\end{frame}
 
