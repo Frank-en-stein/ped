@@ -1,8 +1,0 @@
-\beamer@endinputifotherversion {3.07pt}
-\select@language {french}
-\beamer@sectionintoc {1}{Presentation}{2}{0}{1}
-\beamer@sectionintoc {2}{Papers summary}{7}{0}{2}
-\beamer@sectionintoc {3}{Goals}{20}{0}{3}
-\beamer@sectionintoc {4}{Work done}{23}{0}{4}
-\beamer@sectionintoc {5}{Difficulties}{39}{0}{5}
-\beamer@sectionintoc {6}{Conclusion}{61}{0}{6}
