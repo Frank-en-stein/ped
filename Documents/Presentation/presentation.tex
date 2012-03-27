@@ -31,7 +31,7 @@
 \frame{\titlepage}
 
 %% part 1 - Jun
-\section[Presentation]{Presentation}
+\section[Présentation]{Présentation}
 \AtBeginSection[]{
 \begin{frame}{Table of contents}
 \small \tableofcontents[currentsection, hideothersubsections]
@@ -77,18 +77,101 @@ Le but de ce projet est la création d'une bibliothèque de vision par l'ordinat
 \end{frame}
 
 %% part 2 - Fabien
-\section[Pré-traitement]{Pretraitement}
+\section[Pré-traitement]{Pré-traitement}
 \vspace{5mm}
-\begin{frame}{Filtres}
+\begin{frame}{Objectif}
 \vspace{5mm}
 \begin{itemize}[<+->]
-\item Adaptation Tracker to Saliency descriptors (Saliency maps)
-\item Integration tools in a unique software
+\item Réduire le bruit de l'image, séparer le fond de l'objet pour rendre l'image utilisable ==> binarisation.
+
+%La segmentation se résume à une binarisation, 
+
+%Binarisation deux classes; une pour le fond et une pour l'objet.  
+
+\item Problème difficile pour un dessin avec une vidéo de basse qualité 
+%:  segmentation de dessin avec une vidéo de basse qualité est un problème difficile.
+
+
+
+
+
+\end{itemize}
+\end{frame}
+
+\vspace{5mm}
+\begin{frame}{Difficultés}
+\vspace{5mm}
+\begin{itemize}[<+->]
+\item éclairage non uniforme
+
+\includegraphics<.>[scale=0.20]{images/diffEclairage.png}
+
+%Seuillage globale qui naïvement semble être la bonne solution, montre ses limites la %vidéo peut entraîné un éclairage non uniforme.
+
+\item zones homogènes( coloriées)
+
+\includegraphics[scale=0.2]{images/diffEclairage.png}
+
+%Un dessin est définit par un ensemble de trait et dans certain cas des zones %homogènes( coloriées) ce qui ne nous permet pas d'utiliser un filtre de détection de %contour. ce qui peut etre optimale pour un simple ensemble de trait  
+
+\end{itemize}
+\end{frame}
+
+\vspace{5mm}
+\begin{frame}{Méthodes utilisées}
+\vspace{5mm}
+\begin{itemize}[<+->]
+\item Balance des blanc
+\includegraphics<.>[scale=0.2]{images/wb.png}
+%étirement d'histogramme sur chaques canals avant de les rassembler ==> 
+%permet d'augmenter le contraste.
+\item Seuillage local ( Méthode de Sauvola) 
+\\Le seuil du pixel dépend de la moyenne et de l’écart type dans une fenêtre centré sur le pixel. 
+\includegraphics<.>[scale=0.2]{images/sauvola.png}
+%étude de l'article ... compare les méthodes de binarisation  
+%formule 
+%difficulté trait de faible intensité,  
+
+\end{itemize}
+\end{frame}
+
+%\vspace{5mm}
+%\begin{frame}{Sauvola}
+%\vspace{5mm}
+%
+%\begin{equation}
+%	S(i,j) = \mu(i,j) + \kappa.((\sigma(i,j)/R)-1))
+%\end{equation}
+%
+%Avec :
+%- S(i, j) : seuil à appliquer pour le point i, j ;\\
+%- $\sigma(i, j)$ : valeur de l’écart type dans une fenêtre centré en i, j de taille $N * M$ ;\\
+%- $\mu(i, j)$ : valeur moyenne des niveaux de gris dans la même fenêtre ;\\
+%- $\kappa$ : constante fixée le plus généralement à 0, 2 ;\\
+%- R : constante permettant d'ajuster la dynamique de l'ecart type, géneralement 128.
+%- N et M appartenant à N.\\
+%%article de ...
+%%permet d'obtenir la moyenne en 2 additions et deux soustractions
+%
+%\end{frame}
+
+
+\vspace{5mm}
+\begin{frame}{Optimisation}
+\vspace{5mm}
+\begin{itemize}[<+->]
+\item Image intégral
+\\Reformulation par Viola et Jones "Robust real-time face detection" 2004
+\includegraphics<.>[scale=0.25]{images/imageIntegrale1.png}
+\item[]
+\includegraphics<.>[scale=0.25]{images/imageIntegrale.png}
+%article de ...
+%permet d'obtenir la moyenne en 2 additions et deux soustractions
 \end{itemize}
 \end{frame}
 
 %% part 3 - Nicolas
-\section[Détection de Pictogrammes]{Template Detector}
+\section[Détection de Pictogrammes]{Détection de Pictogrammes}
 \begin{frame}{Objectif}
 \vspace{5mm}
 \begin{itemize}
